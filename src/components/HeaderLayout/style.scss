@@ -1,0 +1,10 @@
+.right {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+}
+@media (max-width: 576px) {
+  .header__content {
+    justify-content: space-between;
+  }
+}

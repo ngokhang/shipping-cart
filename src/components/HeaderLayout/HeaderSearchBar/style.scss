@@ -1,0 +1,19 @@
+.header__search {
+  width: 320px;
+  .holder {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  button {
+    position: absolute;
+    left: 90%;
+    cursor: pointer;  
+    border: unset;
+    box-shadow: unset;
+    background-color: transparent;
+  }
+  input {
+    padding: 5px;
+  }
+}
