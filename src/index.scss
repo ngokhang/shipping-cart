@@ -5,3 +5,13 @@
   box-sizing: border-box;
   list-style: none;
 }
+
+.ant-tabs-nav-wrap {
+  .ant-tabs-tab-btn {
+    color: black !important;
+  }
+  .ant-tabs-ink-bar {
+    background: black !important;
+  }
+
+}

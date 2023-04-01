@@ -1,6 +1,8 @@
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
-const NotifyModal = props => {
+import './style.scss';
+
+const ButtonUpdate = props => {
   const { title, handleOnClickUpdate } = props;
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -48,4 +50,4 @@ const NotifyModal = props => {
     </>
   );
 };
-export default NotifyModal;
+export default ButtonUpdate;
