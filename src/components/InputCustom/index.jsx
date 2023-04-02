@@ -9,8 +9,7 @@ InputCustom.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   placeholderStr: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
+  
   id: PropTypes.string.isRequired,
   isDisabled: PropTypes.bool,
 };
@@ -19,10 +18,10 @@ function InputCustom(props) {
   const {
     name,
     type,
-    value,
+    
     placeholderStr,
     id,
-    onChange,
+   
     editType,
     isDisabled,
   } = props;
@@ -32,8 +31,8 @@ function InputCustom(props) {
         name={name}
         type={type}
         id={id}
-        onChange={e => onChange(e)}
-        value={value}
+        
+       
         disabled={isDisabled && true}
         placeholder={!editType && placeholderStr}
         required
