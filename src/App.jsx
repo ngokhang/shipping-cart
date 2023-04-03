@@ -5,6 +5,7 @@ import './App.scss';
 import Profile from './pages/Profile';
 import Logout from './pages/Authentication/components/Logout';
 
+
 function App() {
   return (
     <Layout style={{ padding: '0', backgroundColor: 'white' }}>
