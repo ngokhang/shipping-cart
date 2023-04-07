@@ -64,11 +64,11 @@ vertical-align: Center;
 `;
 
 export const Heading = styled.p`
-font-size: 16x;
-font-style: Medium;
-line-height: 22.4px
-line-height: 140%;
-color: #FFFFFF;
-margin-bottom: 40px;
-font-weight: bold;
+	font-size: 16x;
+	font-style: Medium;
+	line-height: 22.4px
+	line-height: 140%;
+	color: #FFFFFF;
+	margin-bottom: 40px;
+	font-weight: bold;
 `;
