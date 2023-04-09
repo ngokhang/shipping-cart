@@ -4,8 +4,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
+<<<<<<< HEAD
 import './index.css';
 import { ContextProvider } from './store/Context';
+=======
+import './index.scss';
+import './assets/styles/index.scss';
+>>>>>>> 266c15bafa39e68158d644fabc58afee89578af5
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
