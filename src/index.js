@@ -4,7 +4,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
+<<<<<<< HEAD
 import './index.scss';
+=======
+import './index.css';
+>>>>>>> 51cf0180fea6318a3e6677c0dc2372d965711d6c
 import { ContextProvider } from './store/Context';
 
 const container = document.getElementById('root');
