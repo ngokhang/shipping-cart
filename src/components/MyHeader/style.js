@@ -8,10 +8,7 @@ export const HeaderContainer = styled(Header)`
   background-color: white;
   .header-actions {
     display: flex;
-    gap: 40px;
-  }
-  &.sm {
-    display: none;
+    justify-content: flex-end;
   }
 `;
 
