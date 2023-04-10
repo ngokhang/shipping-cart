@@ -4,16 +4,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
-import './index.scss';
-import './assets/styles/index.scss';
+import './index.css';
+import { ContextProvider } from './store/Context';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <ContextProvider>
+    <StrictMode>
+      <App />
+    </StrictMode>
+  </ContextProvider>
 );
 
 // If you want your app to work offline and load faster, you can change
