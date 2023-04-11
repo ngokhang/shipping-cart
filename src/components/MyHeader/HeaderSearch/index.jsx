@@ -7,28 +7,31 @@ import axiosInstance from '../../../shared/services/http-client';
 function HeaderSearch(props) {
   const searchContext = useContext(Context);
   const [isTyping, setIsTyping] = useState(false);
-  const [searchKey, setSearchKey] = useState('');
   const handleOnChange = e => {
-    setSearchKey(e.target.value);
+    searchContext.setSearchKeyword(e.target.value);
     setIsTyping(true);
   };
   useEffect(() => {
     const debounceSearch = setTimeout(async () => {
       setIsTyping(false);
-      searchContext.setSearchResult(
-        (
-          await axiosInstance.get(
-            `/products?filters[name][$contains]=${searchKey}`
-          )
-        ).data
-      );
-      console.log(searchContext.searchResult);
+      if (searchContext.searchKeyword.length === 0) {
+        searchContext.setSearchResult([]);
+      } else {
+        searchContext.setSearchResult(
+          (
+            await axiosInstance.get(
+              `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
+            )
+          ).data
+        );
+      }
     }, 1000);
 
     return () => {
       clearTimeout(debounceSearch);
+      searchContext.setSearchKeyword('');
     };
-  }, [searchKey]);
+  }, [searchContext.searchKeyword]);
 
   return (
     <SearchBar
