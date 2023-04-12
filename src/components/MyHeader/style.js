@@ -1,4 +1,4 @@
-import { Menu } from 'antd';
+import { Drawer, Menu } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import styled from 'styled-components';
 
@@ -10,12 +10,16 @@ export const HeaderContainer = styled(Header)`
     display: flex;
     justify-content: flex-end;
   }
+  @media (max-width: 320px) {
+    padding: 0px 20px !important;
+  }
 `;
 
 export const HeaderMenu = styled(Menu)`
   width: 100%;
   display: flex;
   border-bottom: unset !important;
+  border-right: unset !important;
   .ant-menu-item {
     color: black !important;
     &.no-bd {
@@ -37,6 +41,19 @@ export const HeaderMenu = styled(Menu)`
     &-selected {
       &::after {
         border-bottom: 1px solid black !important;
+      }
+    }
+  }
+`;
+
+export const DrawerMenuTop = styled(Drawer)`
+  .header__menu-account {
+    background-color: white;
+    border-right: unset !important;
+    .ant-menu-submenu-active {
+      background-color: white !important;
+      .ant-menu-sub {
+        background-color: white !important;
       }
     }
   }
