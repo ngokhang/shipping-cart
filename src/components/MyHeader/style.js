@@ -23,9 +23,19 @@ export const HeaderMenu = styled(Menu)`
   .ant-menu-item {
     color: black !important;
     &.no-bd {
+      .ant-menu-title-content {
+        display: flex;
+        line-height: 64px;
+        height: 100%;
+        align-items: center;
+        .ant-input-affix-wrapper {
+          padding: 0;
+        }
+      }
       border-bottom: unset !important;
       justify-self: end;
       cursor: default;
+
       &:hover {
         border-bottom: unset !important;
       }

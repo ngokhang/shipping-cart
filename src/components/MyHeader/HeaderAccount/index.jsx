@@ -51,7 +51,7 @@ function HeaderAccount(props) {
       menu={{ items: loginState.isLogin ? items : items_2 }}
       placement="bottom"
     >
-      <a href="#" style={{ color: 'black' }}>
+      <a href="#" style={{ display: 'flex', color: 'black' }}>
         <AccountIcon className="user-img" />
       </a>
     </Dropdown>

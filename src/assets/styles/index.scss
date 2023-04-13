@@ -27,3 +27,13 @@
   }
 
 }
+
+.ant-modal {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  transform-origin: unset !important;
+  .ant-btn {
+    display: none !important;
+  }
+}
