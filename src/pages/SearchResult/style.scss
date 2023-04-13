@@ -1,0 +1,17 @@
+.search-result-page {
+  padding: 0 50px;
+  background-color: white;
+  .empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  > div {
+    min-height: 928px;
+    display: flex;
+    justify-content: center;
+  }
+  .show-title {
+    padding-top: 36px;
+  }
+}

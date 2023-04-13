@@ -1,32 +1,37 @@
-import React, { useEffect, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context } from '../../../store/Context';
 import { SearchBar } from './style';
 import axiosInstance from '../../../shared/services/http-client';
 
 function HeaderSearch(props) {
-  const [searchKey, setSearchKey] = useState('');
-  const [productsSearch, setProductsSearch] = useState([]);
+  const searchContext = useContext(Context);
   const [isTyping, setIsTyping] = useState(false);
   const handleOnChange = e => {
-    setSearchKey(e.target.value);
+    searchContext.setSearchKeyword(e.target.value);
     setIsTyping(true);
   };
   useEffect(() => {
     const debounceSearch = setTimeout(async () => {
       setIsTyping(false);
-      setProductsSearch(
-        (
-          await axiosInstance.get(
-            `products?filters[name][$contains]=${searchKey.trim()}`
-          )
-        ).data
-      );
+      if (searchContext.searchKeyword.length === 0) {
+        searchContext.setSearchResult([]);
+      } else {
+        searchContext.setSearchResult(
+          (
+            await axiosInstance.get(
+              `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
+            )
+          ).data
+        );
+      }
     }, 1000);
 
     return () => {
       clearTimeout(debounceSearch);
     };
-  }, [searchKey]);
+  }, [searchContext.searchKeyword]);
+
   return (
     <SearchBar
       placeholder="Search products"

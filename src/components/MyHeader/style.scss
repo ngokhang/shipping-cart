@@ -1,0 +1,17 @@
+@media screen and (max-width: 769px) {
+  .desktop-menu {
+    display: none !important;
+  }
+  .mobile-menu {
+    display: flex !important;
+  }
+}
+
+@media screen and (min-width: 770px) {
+  .desktop-menu {
+    display: flex !important;
+  }
+  .mobile-menu {
+    display: none !important;
+  }
+}

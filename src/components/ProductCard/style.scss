@@ -1,0 +1,22 @@
+.card {
+  border: 0 !important;
+  max-width: 256px;
+  margin: 0 auto;
+  &-image{
+    display: flex;
+    max-width: 244px;
+    height: 330px;
+    justify-content: center;
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  &-content {
+    .text {
+      font-size: 18px;
+      line-height: 28px;
+      color: #1D1F22;
+    }
+  }
+}
