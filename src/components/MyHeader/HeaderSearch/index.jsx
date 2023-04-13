@@ -29,7 +29,6 @@ function HeaderSearch(props) {
 
     return () => {
       clearTimeout(debounceSearch);
-      searchContext.setSearchKeyword('');
     };
   }, [searchContext.searchKeyword]);
 

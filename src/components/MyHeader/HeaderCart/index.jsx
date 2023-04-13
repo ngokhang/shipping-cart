@@ -13,7 +13,6 @@ function HeaderCart(props) {
   const onClose = () => {
     setOpen(false);
   };
-  console.log(loginState);
   return (
     <>
       {loginState.isLogin && (
