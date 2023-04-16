@@ -2,6 +2,7 @@ import { Col } from 'antd';
 import React, { useState } from 'react';
 import EmptyCart from './components/EmptyCart';
 import { Cart, CartSVG, DrawerCart } from './style';
+import FilledCart from './components/FilledCart';
 
 HeaderCart.propTypes = {};
 
@@ -20,7 +21,11 @@ function HeaderCart(props) {
         <CartSVG />
       </Cart>
       <DrawerCart placement="right" onClose={onClose} open={open} xs={24}>
-        <EmptyCart />
+        
+        <div className='a'>
+
+        </div>
+        <FilledCart />
       </DrawerCart>
     </Col>
   );

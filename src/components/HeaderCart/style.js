@@ -31,5 +31,15 @@ export const DrawerCart = styled(Drawer)`
       color: white;
       border-radius: 50%;
     }
+    .a{
+      background-color: #fff;
+      border-radius : 20px;
+      padding: 100px 60px
+      width : 200px;
+      box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    }
+  
   }
+  
 `;
+
