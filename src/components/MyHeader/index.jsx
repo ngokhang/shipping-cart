@@ -86,7 +86,9 @@ function MyHeader(props) {
           </MenuItem>
           {navList.map((item, index) => (
             <MenuItem key={index}>
-              <a href="#">{item.toUpperCase()}</a>
+              <a href="#" onClick={() => console.log(item)}>
+                {item.toUpperCase()}
+              </a>
             </MenuItem>
           ))}
         </HeaderMenu>
