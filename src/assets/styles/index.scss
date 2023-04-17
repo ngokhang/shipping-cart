@@ -1,0 +1,39 @@
+.headerLayout {
+  display: flex;
+  width: 100%;
+  gap: 5.6rem;
+  background-color: white;
+  max-height: 80px;
+}
+
+.empty-title {
+  font-size: 18px;
+  line-height: 28px;
+  color: black;
+}
+
+.empty-text {
+  font-size: 12px;
+  line-height: 19px;
+  color: #1d1f22;
+}
+
+.ant-tabs-nav-wrap {
+  .ant-tabs-tab-btn {
+    color: black !important;
+  }
+  .ant-tabs-ink-bar {
+    background: black !important;
+  }
+
+}
+
+.ant-modal {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  transform-origin: unset !important;
+  .ant-btn {
+    display: none !important;
+  }
+}
