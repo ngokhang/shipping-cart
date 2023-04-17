@@ -3,7 +3,6 @@ import { Header } from 'antd/es/layout/layout';
 import React from 'react';
 import HeaderCart from '../../components/HeaderCart';
 import HeaderLogo from '../../components/HeaderLogo';
-import HeaderNavigation from '../../components/HeaderNavigation';
 import SearchBar from '../../components/SearchBar';
 import Logout from '../../pages/Authentication/components/Logout';
 import { ColActions, RowActions } from './style';

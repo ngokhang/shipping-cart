@@ -6,13 +6,14 @@ import './assets/styles/index.scss';
 import MyHeader from './components/MyHeader';
 import Homepage from './pages/Homepage';
 import FooterLayout from './Layouts/Footer';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <Layout>
       <MyHeader />
       <Content style={{ backgroundColor: 'white !important' }}>
-        <Homepage></Homepage>
+        <Outlet />
       </Content>
       <FooterLayout />
     </Layout>

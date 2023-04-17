@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './RegisterAccount.css';
 import axiosInstance from '../../../shared/services/http-client';
@@ -6,6 +6,7 @@ import { Button, Col, Row, Space, Modal } from 'antd';
 import InputCustom from '../../../components/InputCustom';
 import './RegisterAccount.css';
 import './style.scss';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initFormValue = {
   email: '',
@@ -27,6 +28,8 @@ const isEmailValid = email => {
 export default function RegisterPage() {
   const [formValue, setFormValue] = useState(initFormValue);
   const [formError, setFormError] = useState({});
+  const [registerState, setRegisterState] = useState(false);
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const error = {};
@@ -76,6 +79,7 @@ export default function RegisterPage() {
         });
         console.log('Server response', response.data);
         countDownSuccess();
+        navigate('/');
       } catch (error) {
         console.error('Error sending form data to server', error);
       }
@@ -124,7 +128,7 @@ export default function RegisterPage() {
 
   return (
     <Row className="register-page">
-      <Col xs={16} lg={8} className="register-form-container">
+      <Col xs={24} sm={16} lg={8} className="register-form-container">
         <Space direction="vertical" style={{ width: '100%' }} size={'middle'}>
           <InputCustom
             name="email"
@@ -184,15 +188,15 @@ export default function RegisterPage() {
             <span className="btn-title">create account</span>
           </Button>
 
-          <a
-            href="/register"
+          <Link
+            to="/login"
             className="link-register"
             onClick={e => {
               console.log('Hello world');
             }}
           >
             or log in to your account
-          </a>
+          </Link>
         </Space>
       </Col>
       {contextHolder}

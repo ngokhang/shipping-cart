@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 
 import InputCustom from '../../../../components/InputCustom';
 import ButtonUpdate from '../ButtonUpdate';
+import axiosInstance from '../../../../shared/services/http-client';
 
 ChangePassword.propTypes = {};
 
 function ChangePassword(props) {
   const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   const handleOnClickUpdate = async e => {
@@ -16,6 +19,11 @@ function ChangePassword(props) {
       setIsPasswordValid(false);
       return;
     }
+    await axiosInstance.put('auth/change-password', {
+      currentPassword,
+      password: newPassword,
+      passwordConfirmation: newPassword,
+    });
   };
 
   const validatePassword = password => {

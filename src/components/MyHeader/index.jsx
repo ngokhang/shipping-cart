@@ -9,6 +9,7 @@ import { Drawer, Menu } from 'antd';
 import { BarsOutlined, UserOutlined } from '@ant-design/icons';
 import './style.scss';
 import { Context } from '../../store/Context';
+import { Link } from 'react-router-dom';
 
 function getItem(label, key, icon, children) {
   return {
@@ -86,9 +87,9 @@ function MyHeader(props) {
           </MenuItem>
           {navList.map((item, index) => (
             <MenuItem key={index}>
-              <a href="#" onClick={() => console.log(item)}>
+              <Link to={`${'/' + item.split(' ').join('')}`}>
                 {item.toUpperCase()}
-              </a>
+              </Link>
             </MenuItem>
           ))}
         </HeaderMenu>
