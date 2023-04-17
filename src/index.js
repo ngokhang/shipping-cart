@@ -6,6 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
 import './index.scss';
 import { ContextProvider } from './store/Context';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -13,7 +15,8 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <ContextProvider>
     <StrictMode>
-      <App />
+      {/* <App /> */}
+      <RouterProvider router={router} />
     </StrictMode>
   </ContextProvider>
 );

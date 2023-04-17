@@ -1,19 +1,20 @@
 import { Layout } from 'antd';
-import React from 'react';
-import MyHeader from './components/MyHeader';
-import SearchResult from './pages/SearchResult';
-import './assets/styles/index.scss';
-import RegisterPage from './pages/Authentication/Register';
 import { Content } from 'antd/es/layout/layout';
-import Login from './pages/Authentication/Login';
+import React from 'react';
+import './App.scss';
+import './assets/styles/index.scss';
+import MyHeader from './components/MyHeader';
+import Homepage from './pages/Homepage';
+import FooterLayout from './Layouts/Footer';
 
 function App() {
   return (
     <Layout>
       <MyHeader />
-      <Content>
-        <SearchResult />
+      <Content style={{ backgroundColor: 'white !important' }}>
+        <Homepage></Homepage>
       </Content>
+      <FooterLayout />
     </Layout>
   );
 }

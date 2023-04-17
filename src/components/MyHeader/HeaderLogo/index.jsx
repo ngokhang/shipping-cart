@@ -7,6 +7,7 @@ function HeaderLogo(props) {
       href="#"
       style={{
         display: 'inline-block',
+        padding: '0 !important',
       }}
     >
       <img src={Logo} alt="" />

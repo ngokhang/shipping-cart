@@ -11,7 +11,7 @@ import { ColActions, RowActions } from './style';
 function HeaderLayout(props) {
   return (
     <Header style={{ backgroundColor: 'white' }}>
-      <Row>
+      <Row className="container">
         <Col xs={24} md={10} className="left">
           <Row gutter={40}>
             <HeaderLogo />

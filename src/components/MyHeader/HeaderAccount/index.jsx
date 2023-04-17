@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AccountIcon } from './style';
 import { Dropdown } from 'antd';
 import { Context } from '../../../store/Context';
+import { Link, Outlet } from 'react-router-dom';
 
 function HeaderAccount(props) {
   const loginState = useContext(Context);
@@ -32,9 +33,9 @@ function HeaderAccount(props) {
     {
       key: '1',
       label: (
-        <a target="_blank" href="#">
+        <Link target="_blank" to="/auth/login">
           Log in
-        </a>
+        </Link>
       ),
     },
     {

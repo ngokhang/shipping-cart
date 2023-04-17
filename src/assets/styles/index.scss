@@ -1,9 +1,19 @@
-.headerLayout {
-  display: flex;
-  width: 100%;
-  gap: 5.6rem;
+// .headerLayout {
+//   display: flex;
+//   width: 100%;
+//   gap: 5.6rem;
+//   background-color: white;
+//   max-height: 80px;
+// }
+
+.container {
+  min-width: 1070px;
+  margin: 0 auto;
   background-color: white;
-  max-height: 80px;
+}
+
+img {
+  width: 100%;
 }
 
 .empty-title {
