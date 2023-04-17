@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../../store/Context';
 import { SearchBar } from './style';
 import axiosInstance from '../../../shared/services/http-client';
+import { useNavigate } from 'react-router-dom';
 
 function HeaderSearch(props) {
   const searchContext = useContext(Context);
@@ -11,6 +12,7 @@ function HeaderSearch(props) {
     searchContext.setSearchKeyword(e.target.value);
     setIsTyping(true);
   };
+  const navigate = useNavigate();
   useEffect(() => {
     const debounceSearch = setTimeout(async () => {
       setIsTyping(false);
@@ -34,6 +36,7 @@ function HeaderSearch(props) {
 
   return (
     <SearchBar
+      onClick={() => navigate('search')}
       placeholder="Search products"
       suffix={<SearchOutlined />}
       onChange={e => handleOnChange(e)}

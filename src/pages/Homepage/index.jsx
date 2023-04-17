@@ -1,8 +1,10 @@
-import { Col, Row } from 'antd';
-import React from 'react';
+import { Col, Modal, Row } from 'antd';
+import React, { useContext, useEffect } from 'react';
 import Hero from './components/Hero';
 import SliderProduct from './components/SliderProduct';
 import { Outlet } from 'react-router-dom';
+import { Context } from '../../store/Context';
+import './style.scss';
 
 function Homepage(props) {
   return (

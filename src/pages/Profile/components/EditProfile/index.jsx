@@ -18,9 +18,7 @@ function EditProfile(props) {
 
   const handleOnClickUpdate = async e => {
     e.preventDefault();
-    await axiosInstance
-      .put(`users/${userData.id}`, userData)
-      .then(res => console.log(res));
+    await axiosInstance.put(`users/${userData.id}`, userData);
   };
 
   useEffect(() => {

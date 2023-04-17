@@ -17,11 +17,11 @@ function Profile(props) {
     {
       key: '2',
       label: `Change password`,
-      children: <ChangePassword className="change_password"/>,
+      children: <ChangePassword className="change_password" />,
     },
   ];
   return (
-    <Row>
+    <Row style={{ height: '100vh' }}>
       <Col xs={24} className="update__page">
         <Tabs defaultActiveKey="1" items={items} />
       </Col>
