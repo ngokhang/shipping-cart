@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Context } from '../../store/Context';
-import { Col, Row } from 'antd';
+import { Col, Pagination, Row } from 'antd';
 import './style.scss';
 import ProductCard from '../../components/ProductCard';
 
@@ -8,6 +8,7 @@ function SearchResult(props) {
   const searchResultContext = useContext(Context);
   const searchResult = searchResultContext.searchResult;
   const searchKeyword = searchResultContext.searchKeyword;
+  const totalPage = searchResultContext.pageSize;
 
   return (
     <Row className="search-result-page" justify={'center'}>
@@ -19,7 +20,7 @@ function SearchResult(props) {
           </div>
         ) : (
           <Row>
-            <Col xs={24}>
+            <Col xs={24} style={{ display: 'flex', justifyContent: 'center' }}>
               <Row justify={'start'} style={{ maxWidth: '768px' }}>
                 <Col xs={24}>
                   <p className="show-title">{`Showing ${searchResult.length} results for "${searchResultContext.searchKeyword}"`}</p>
@@ -41,6 +42,9 @@ function SearchResult(props) {
                   </Col>
                 ))}
               </Row>
+            </Col>
+            <Col style={{ margin: '0 auto' }}>
+              <Pagination defaultCurrent={1} total={totalPage} />
             </Col>
           </Row>
         )}

@@ -19,13 +19,11 @@ function HeaderSearch(props) {
       if (searchContext.searchKeyword.length === 0) {
         searchContext.setSearchResult([]);
       } else {
-        searchContext.setSearchResult(
-          (
-            await axiosInstance.get(
-              `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
-            )
-          ).data
+        const res = await axiosInstance.get(
+          `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
         );
+        searchContext.setSearchResult(res.data);
+        searchContext.setPageSize(res.meta.pagination.pageSize);
       }
     }, 1000);
 

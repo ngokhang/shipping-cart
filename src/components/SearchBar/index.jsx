@@ -7,10 +7,6 @@ SearchBar.propTypes = {};
 
 function SearchBar(props) {
   const [loading, setLoading] = useState(false);
-  const onSearch = value => {
-    console.log(value);
-    setLoading(true);
-  };
   useEffect(() => {
     const loadingSto = setTimeout(() => {
       setLoading(false);

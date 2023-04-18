@@ -10,12 +10,15 @@ const Context = createContext({
   searchKeyword: '',
   setSearchKeyword: () => undefined,
   searchRef: {},
+  pageSize: 0,
+  setPageSize: () => {},
 });
 function ContextProvider({ children }) {
   const [isLogin, setIsLogin] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [productsInCart, setProductsInCart] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [pageSize, setPageSize] = useState();
 
   useEffect(() => {
     const currentTime = Math.floor(Date.now() / 1000);
@@ -39,6 +42,8 @@ function ContextProvider({ children }) {
         productsInCart,
         searchKeyword,
         setSearchKeyword,
+        pageSize,
+        setPageSize,
       }}
     >
       {children}
