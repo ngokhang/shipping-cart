@@ -4,11 +4,13 @@ import './style.scss';
 import { MyCard } from './style';
 import { ShoppingCartOutlined } from '@ant-design/icons/lib/icons';
 
+
 function ProductCard({ imgUrl, name, price, id }) {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'VND',
   });
+  
   return (
     <MyCard className="card">
       <div className="card-content">
