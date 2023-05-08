@@ -5,6 +5,8 @@ import Profile from '../pages/Profile';
 import Register from '../pages/Authentication/Register';
 import Homepage from '../pages/Homepage';
 import SearchResult from '../pages/SearchResult';
+import Clothes from '../pages/Clothes';
+import Shoes from '../pages/SportShoes';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
         path: 'search',
         element: <SearchResult />,
       },
+      {
+        path: 'clothes',
+        element: <Clothes />,
+      },
+      {
+        path: 'sportshoes',
+        element: <Shoes />,
+      }
     ],
   },
 ]);
