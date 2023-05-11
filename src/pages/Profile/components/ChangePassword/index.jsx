@@ -1,13 +1,12 @@
 import { Col, Row, Space } from 'antd';
 import React, { useState } from 'react';
-
 import InputCustom from '../../../../components/InputCustom';
 import ButtonUpdate from '../ButtonUpdate';
 import axiosInstance from '../../../../shared/services/http-client';
 
 ChangePassword.propTypes = {};
 
-function ChangePassword(props) {
+function ChangePassword(props) {  
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
