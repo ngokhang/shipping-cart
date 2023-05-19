@@ -7,6 +7,9 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const totalItems = products.reduce((total, product) => {
+    return total + product.quantity;
+  }, 0);
 
   useEffect(() => {
     fetchProducts();
@@ -21,7 +24,7 @@ const ProductList = () => {
         .map(({ id, attributes: { name, image } }) => ({
           id,
           name,
-          image
+          image, quantity: 1
         }));
 
       setProducts(data);
@@ -48,6 +51,10 @@ const ProductList = () => {
         </Menu>
 
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div style={{ position: 'absolute', top: '50px', right: '20px', margin: '20px 60px 20px 0' }}>
+          <h1>Product found: {totalItems}</h1>
+        </div>
+
           {products.map((product) => (
             <Card key={product.id} style={{ width: 300, margin: '10px' }}>
               <img src={product.image} alt={product.name} style={{ width: '100%' }} />
