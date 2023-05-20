@@ -5,11 +5,11 @@ import HeaderCart from './HeaderCart';
 import HeaderLogo from './HeaderLogo';
 import HeaderSearch from './HeaderSearch';
 import { DrawerMenuTop, HeaderContainer, HeaderMenu } from './style';
-import { Drawer, Menu } from 'antd';
+import { Drawer, Menu, Tabs } from 'antd';
 import { BarsOutlined, UserOutlined } from '@ant-design/icons';
 import './style.scss';
 import { Context } from '../../store/Context';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function getItem(label, key, icon, children) {
   return {
@@ -86,7 +86,7 @@ function MyHeader(props) {
             <HeaderLogo />
           </MenuItem>
           {navList.map((item, index) => (
-            <MenuItem key={index}>
+            <MenuItem key={index} defaultChecked={index === 0 ? true : false}>
               <Link to={`${'/' + item.split(' ').join('')}`}>
                 {item.toUpperCase()}
               </Link>

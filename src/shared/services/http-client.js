@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
-    } 
+    }
     return config;
   },
   error => {
@@ -33,5 +33,27 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const postRegisterUser = async (
+  username,
+  email,
+  password,
+  confirmed,
+  role,
+  fullname,
+  address,
+  phoneNumber
+) => {
+  return await axiosInstance.post('auth/local/register', {
+    username,
+    email,
+    password,
+    confirmed,
+    role,
+    fullname,
+    address,
+    phoneNumber,
+  });
+};
 
 export default axiosInstance;
