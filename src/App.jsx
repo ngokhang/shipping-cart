@@ -7,6 +7,7 @@ import MyHeader from './components/MyHeader';
 import Homepage from './pages/Homepage';
 import FooterLayout from './Layouts/Footer';
 import { Outlet } from 'react-router-dom';
+import ViewProduct from './pages/View_product_detail';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Outlet />
       </Content>
       <FooterLayout />
+      
     </Layout>
   );
 }

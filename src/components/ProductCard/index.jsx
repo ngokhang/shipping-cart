@@ -4,14 +4,14 @@ import './style.scss';
 import { MyCard } from './style';
 import { ShoppingCartOutlined } from '@ant-design/icons/lib/icons';
 
-function ProductCard({ imgUrl, name, price, id }) {
+function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'VND',
   });
   return (
-    <MyCard className="card">
-      <div className="card-content">
+    <MyCard className="card" onClick={() => handleOnClickProduct(id)}>
+      <div className="card-content" >
         <a href="#" className="card-image">
           <img src={imgUrl} alt="image_product" />
           <ShoppingCartOutlined

@@ -7,9 +7,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
+import { useNavigate } from 'react-router-dom';
 
 function SliderProduct({ title }) {
   const [productList, setProductList] = useState([]);
+  const navigate = useNavigate();
+  const handleOnClickProduct = (index) => {
+    navigate(`products/${index}`);
+  }
   const fetchData = async () => {
     setProductList((await axiosInstance.get('products')).data);
   };
@@ -41,6 +46,7 @@ function SliderProduct({ title }) {
                 imgUrl={product.attributes.image}
                 id={product.id}
                 key={index}
+                handleOnClickProduct={handleOnClickProduct}
               />
             </div>
           ))}

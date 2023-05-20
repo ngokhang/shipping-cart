@@ -45,10 +45,12 @@ function Login(props) {
         password: password,
       })
       .then(result => {
-        const { jwt } = result;
+        const { jwt, user } = result;
+        console.log(user);
         if (jwt.length !== 0) {
           notifySuccess();
           localStorage.setItem('at', jwt);
+          localStorage.setItem('userId', user.id);
           loginContext.setIsLogin(true);
           setTimeout(() => {
             navigate('/');

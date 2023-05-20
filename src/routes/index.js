@@ -5,6 +5,7 @@ import Profile from '../pages/Profile';
 import Register from '../pages/Authentication/Register';
 import Homepage from '../pages/Homepage';
 import SearchResult from '../pages/SearchResult';
+import ViewProduct from '../pages/View_product_detail';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchResult />,
+      },
+      {
+        path: 'products/:id',
+        element: <ViewProduct />,
       },
     ],
   },
