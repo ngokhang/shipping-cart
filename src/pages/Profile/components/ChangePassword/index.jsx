@@ -1,8 +1,8 @@
-import { Col, Row, Space } from 'antd';
+import { Col, Row } from 'antd';
 import React, { useState } from 'react';
 import InputCustom from '../../../../components/InputCustom';
-import ButtonUpdate from '../ButtonUpdate';
 import axiosInstance from '../../../../shared/services/http-client';
+import ButtonUpdate from '../ButtonUpdate';
 
 ChangePassword.propTypes = {};
 
@@ -14,6 +14,10 @@ function ChangePassword(props) {
 
   const handleOnChangeCurrentPassword = e => {
     setCurrentPassword(e.target.value);
+  }
+
+  const handleOnChangePasswordConfirmation = e => {
+    setPasswordConfirmation(e.target.value);
   }
 
   const handleOnClickUpdate = async e => {
@@ -62,10 +66,7 @@ function ChangePassword(props) {
           name={'newPassword'}
           id="newPasswordInp"
           value={newPassword}
-          onChange={e => {
-            setNewPassword(e.target.value);
-            setIsPasswordValid(true);
-          }}
+          onChange={handleOnChangePasswordConfirmation}
         />
         {!isPasswordValid && (
           <span style={{ color: 'red' }}>
