@@ -16,7 +16,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosInstance.get('https://edison-shipping-api.savvycom.xyz/api/products');
+      const response = await axiosInstance.get('products');
       const data = response.data.filter(item => item.id < 13).map(item => item.attributes);
       setProducts(data);
       setQuantityProduct(data.length);

@@ -6,11 +6,15 @@ import axiosInstance from '../../../../shared/services/http-client';
 
 ChangePassword.propTypes = {};
 
-function ChangePassword(props) {  
+function ChangePassword(props) {
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+
+  const handleOnChangeCurrentPassword = e => {
+    setCurrentPassword(e.target.value);
+  }
 
   const handleOnClickUpdate = async e => {
     e.preventDefault();
@@ -18,6 +22,7 @@ function ChangePassword(props) {
       setIsPasswordValid(false);
       return;
     }
+    console.log("Check current password: ", currentPassword);
     await axiosInstance.put('auth/change-password', {
       currentPassword,
       password: newPassword,
@@ -41,14 +46,17 @@ function ChangePassword(props) {
     >
       <Col xs={24} sm={24} md={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'Current Password'}
+          onChange={handleOnChangeCurrentPassword}
           name={'currentPassword'}
           id="currentPasswordInp"
         />
       </Col>
       <Col xs={24} sm={24} md={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'New Password'}
           name={'newPassword'}
@@ -68,6 +76,7 @@ function ChangePassword(props) {
       </Col>
       <Col xs={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'Repeat Password'}
           name={'repeatPassword'}
