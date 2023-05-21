@@ -20,10 +20,17 @@ export default function RegisterPage() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    const response = await postRegisterUser(username, email, password, confirmed, role, fullName, address, phoneNumber);
-    console.log(response);
-    if (response.jwt) {
-      toast.success('Create new user successfully', { autoClose: 1500, position: 'top-right' })
+    try {
+      const response = await postRegisterUser(username, email, password, confirmed, role, fullName, address, phoneNumber);
+      if (response.jwt) {
+        toast.success('Create new user successfully', { autoClose: 1500, position: 'top-right' });
+      }
+      setTimeout(() => {
+        navigate('../login');
+      }, 2000);
+    } catch (error) {
+      toast.error('Invalid information, plaese try again', { autoClose: 1500, position: 'top-right' });
+      console.log(error.details);
     }
   };
 

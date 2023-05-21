@@ -1,16 +1,24 @@
-import { Col, Row, Space } from 'antd';
+import { Col, Row } from 'antd';
 import React, { useState } from 'react';
 import InputCustom from '../../../../components/InputCustom';
-import ButtonUpdate from '../ButtonUpdate';
 import axiosInstance from '../../../../shared/services/http-client';
+import ButtonUpdate from '../ButtonUpdate';
 
 ChangePassword.propTypes = {};
 
-function ChangePassword(props) {  
+function ChangePassword(props) {
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+
+  const handleOnChangeCurrentPassword = e => {
+    setCurrentPassword(e.target.value);
+  }
+
+  const handleOnChangePasswordConfirmation = e => {
+    setPasswordConfirmation(e.target.value);
+  }
 
   const handleOnClickUpdate = async e => {
     e.preventDefault();
@@ -18,6 +26,7 @@ function ChangePassword(props) {
       setIsPasswordValid(false);
       return;
     }
+    console.log("Check current password: ", currentPassword);
     await axiosInstance.put('auth/change-password', {
       currentPassword,
       password: newPassword,
@@ -41,23 +50,23 @@ function ChangePassword(props) {
     >
       <Col xs={24} sm={24} md={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'Current Password'}
+          onChange={handleOnChangeCurrentPassword}
           name={'currentPassword'}
           id="currentPasswordInp"
         />
       </Col>
       <Col xs={24} sm={24} md={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'New Password'}
           name={'newPassword'}
           id="newPasswordInp"
           value={newPassword}
-          onChange={e => {
-            setNewPassword(e.target.value);
-            setIsPasswordValid(true);
-          }}
+          onChange={handleOnChangePasswordConfirmation}
         />
         {!isPasswordValid && (
           <span style={{ color: 'red' }}>
@@ -68,6 +77,7 @@ function ChangePassword(props) {
       </Col>
       <Col xs={24}>
         <InputCustom
+          type={'password'}
           editType={true}
           placeholderStr={'Repeat Password'}
           name={'repeatPassword'}
