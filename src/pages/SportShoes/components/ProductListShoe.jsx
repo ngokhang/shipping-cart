@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Pagination, Card, Menu } from 'antd';
+import { Col, Menu, Pagination, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProductCard from '../../../components/ProductCard';
 import axiosInstance from '../../../shared/services/http-client';
+import './style.scss';
 
 const ProductListShoes = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const totalItems = products.reduce((total, product) => {
-    return total + product.quantity;
-  }, 0);
 
   useEffect(() => {
     fetchProducts();
@@ -18,17 +17,8 @@ const ProductListShoes = () => {
   const fetchProducts = async () => {
     try {
       const response = await axiosInstance.get('https://edison-shipping-api.savvycom.xyz/api/products');
-
-      const data = response.data
-        .filter(({ id }) => id >= 13)
-        .map(({ id, attributes: { name, image } }) => ({
-          id,
-          name,
-          image,
-          quantity: 1
-        }));
+      const data = response.data.filter(item => item.id >= 13).map(item => item.attributes);
       setProducts(data);
-      setTotalPages(Math.ceil(data.length / 8)); // Chia mỗi trang 8 sản phẩm
     } catch (error) {
       console.log(error);
     }
@@ -49,21 +39,20 @@ const ProductListShoes = () => {
             <Link to="/sportshoes">Shoes</Link>
           </Menu.Item>
         </Menu>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <div style={{ position: 'absolute', top: '50px', right: '20px', margin: '20px 60px 20px 0' }}>
-          <h1>Product found: {totalItems}</h1>
-        </div>
-          {products.map((product) => (
-            <Card key={product.id} style={{ width: 300, margin: '10px' }}>
-              <img src={product.image} alt={product.name} style={{ width: '100%' }} />
-              <h2>{product.name}</h2>
-            </Card>
-          ))}
-        </div>
+        <Row gutter={[16, 24]}>
+          {
+            products.map((item, index) => (
+              <Col key={index} md={6}>
+                <ProductCard imgUrl={item.image} name={item.name} price={item.price} id={index + 1} />
+              </Col>
+            ))
+          }
+        </Row>
       </div>
 
-      <Pagination style={{textalign: 'center'}} current={currentPage} total={totalPages * 8} pageSize={8} onChange={handlePageChange} />
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
+        <Pagination style={{ textalign: 'center' }} current={currentPage} total={totalPages * 8} pageSize={8} onChange={handlePageChange} />
+      </div>
     </div>
   );
 };

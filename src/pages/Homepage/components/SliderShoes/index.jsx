@@ -8,16 +8,15 @@ import axiosInstance from '../../../../shared/services/http-client';
 import { MySlick } from './style';
 import './style.scss';
 
-function SliderProduct({ title }) {
+function SliderShoes({ title }) {
   const [productList, setProductList] = useState([]);
   const fetchData = async () => {
     const response = (await axiosInstance.get(`products`)).data;
-    const _productsList = response.filter(item => item.id < 13).map(item => item.attributes);
+    const _productsList = response.filter(item => item.id >= 13).map(item => item.attributes);
     setProductList(_productsList);
   };
   const settings = {
     arrows: true,
-    // dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
@@ -50,4 +49,4 @@ function SliderProduct({ title }) {
   );
 }
 
-export default SliderProduct;
+export default SliderShoes;
