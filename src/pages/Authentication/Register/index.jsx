@@ -1,205 +1,115 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import './RegisterAccount.css';
-import axiosInstance from '../../../shared/services/http-client';
-import { Button, Col, Row, Space, Modal } from 'antd';
+import { Button, Col, Modal, Row, Space } from 'antd';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import InputCustom from '../../../components/InputCustom';
+import { postRegisterUser } from '../../../shared/services/http-client';
 import './RegisterAccount.css';
 import './style.scss';
-import { Link, useNavigate } from 'react-router-dom';
-
-const initFormValue = {
-  email: '',
-  username: '',
-  fullname: '',
-  password: '',
-  phoneNumber: '',
-  address: '',
-};
-
-const isEmptyValue = value => {
-  return !value || value.trim().length < 1;
-};
-
-const isEmailValid = email => {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-};
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function RegisterPage() {
-  const [formValue, setFormValue] = useState(initFormValue);
-  const [formError, setFormError] = useState({});
-  const [registerState, setRegisterState] = useState(false);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState(1);
+  const [confirmed, setConfirmed] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
   const navigate = useNavigate();
-
-  const validateForm = () => {
-    const error = {};
-    if (isEmptyValue(formValue.email)) {
-      error['email'] = 'Email is required!';
-    } else {
-      if (!isEmailValid(formValue.email)) {
-        error['email'] = 'Email is invalid!';
-      }
-    }
-    if (isEmptyValue(formValue.username)) {
-      error['username'] = 'User name is required!';
-    }
-    if (isEmptyValue(formValue.fullname)) {
-      error['fullname'] = 'Full name is required!';
-    }
-    if (isEmptyValue(formValue.password)) {
-      error['password'] = 'Password is required!';
-    }
-    if (isEmptyValue(formValue.phoneNumber)) {
-      error['phoneNumber'] = 'Phone number is required!';
-    }
-    if (isEmptyValue(formValue.address)) {
-      error['address'] = 'Address is required!';
-    }
-    setFormError(error);
-    return Object.keys(error).length === 0;
-  };
-
-  const handleChange = event => {
-    const { value, name } = event.target;
-    console.log(value, name);
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
 
   const handleSubmit = async event => {
     event.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await axiosInstance.post('auth/local/register', {
-          ...formValue,
-          confirmed: true,
-          role: 1,
-        });
-        console.log('Server response', response.data);
-        countDownSuccess();
-        navigate('/');
-      } catch (error) {
-        console.error('Error sending form data to server', error);
+    try {
+      const response = await postRegisterUser(username, email, password, confirmed, role, fullName, address, phoneNumber);
+      if (response.jwt) {
+        toast.success('Create new user successfully', { autoClose: 1500, position: 'top-right' });
       }
-    } else {
-      countDownError();
-      console.log('Form invalid!');
+      setTimeout(() => {
+        navigate('../login');
+      }, 2000);
+    } catch (error) {
+      toast.error('Invalid information, plaese try again', { autoClose: 1500, position: 'top-right' });
+      console.log(error.details);
     }
   };
 
-  const [modal, contextHolder] = Modal.useModal();
-  const countDownSuccess = () => {
-    let secondsToGo = 1;
-    const instance = modal.success({
-      title: 'Notification',
-      content: `Register successfully`,
-    });
-    const timer = setInterval(() => {
-      secondsToGo -= 1;
-      instance.update({
-        content: `Register successfully`,
-      });
-    }, 1000);
-    setTimeout(() => {
-      clearInterval(timer);
-      instance.destroy();
-    }, secondsToGo * 1000);
-  };
-
-  const countDownError = () => {
-    let secondsToGo = 1;
-    const instance = modal.error({
-      title: 'Notification',
-      content: `Register failed`,
-    });
-    const timer = setInterval(() => {
-      secondsToGo -= 1;
-      instance.update({
-        content: `Register failed`,
-      });
-    }, 1000);
-    setTimeout(() => {
-      clearInterval(timer);
-      instance.destroy();
-    }, secondsToGo * 1000);
-  };
-
   return (
-    <Row className="register-page">
-      <Col xs={24} sm={16} lg={8} className="register-form-container">
-        <Space direction="vertical" style={{ width: '100%' }} size={'middle'}>
-          <InputCustom
-            name="email"
-            type="text"
-            placeholderStr={'Your email'}
-            id="emailInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <InputCustom
-            name="username"
-            type="text"
-            placeholderStr={'Username'}
-            id="usernameInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <InputCustom
-            name="fullname"
-            type="text"
-            placeholderStr={'Fullname'}
-            id="fullnameInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <InputCustom
-            name="password"
-            type="password"
-            placeholderStr={'Password'}
-            id="passwordInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <InputCustom
-            name="phonenumber"
-            type="text"
-            placeholderStr={'Phone number'}
-            id="phonenumberInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <InputCustom
-            name="address"
-            type="text"
-            placeholderStr={'Address'}
-            id="addressInp"
-            editType={true}
-            onChange={e => handleChange(e)}
-          />
-          <Button
-            block
-            className="btn btn-register"
-            onClick={e => {
-              handleSubmit(e);
-            }}
-          >
-            <span className="btn-title">create account</span>
-          </Button>
+    <>
+      <ToastContainer />
+      <Row className="register-page">
+        <Col xs={24} sm={16} lg={8} className="register-form-container">
+          <Space direction="vertical" style={{ width: '100%' }} size={'middle'}>
+            <InputCustom
+              name="email"
+              type="text"
+              placeholderStr={'Your email'}
+              id="emailInp"
+              editType={true}
+              onChange={e => setEmail(e.target.value)}
+            />
+            <InputCustom
+              name="username"
+              type="text"
+              placeholderStr={'Username'}
+              id="usernameInp"
+              editType={true}
+              onChange={e => setUsername(e.target.value)}
+            />
+            <InputCustom
+              name="fullname"
+              type="text"
+              placeholderStr={'Fullname'}
+              id="fullnameInp"
+              editType={true}
+              onChange={e => setFullName(e.target.value)}
+            />
+            <InputCustom
+              name="password"
+              type="password"
+              placeholderStr={'Password'}
+              id="passwordInp"
+              editType={true}
+              onChange={e => setPassword(e.target.value)}
+            />
+            <InputCustom
+              name="phonenumber"
+              type="text"
+              placeholderStr={'Phone number'}
+              id="phonenumberInp"
+              editType={true}
+              onChange={e => setPhoneNumber(e.target.value)}
+            />
+            <InputCustom
+              name="address"
+              type="text"
+              placeholderStr={'Address'}
+              id="addressInp"
+              editType={true}
+              onChange={e => setAddress(e.target.value)}
+            />
+            <Button
+              block
+              className="btn btn-register"
+              onClick={e => {
+                handleSubmit(e);
+              }}
+            >
+              <span className="btn-title">create account</span>
+            </Button>
 
-          <Link
-            to="/login"
-            className="link-register"
-            onClick={e => {
-              console.log('Hello world');
-            }}
-          >
-            or log in to your account
-          </Link>
-        </Space>
-      </Col>
-      {contextHolder}
-    </Row>
+            <Link
+              to="/login"
+              className="link-register"
+              onClick={e => {
+                console.log('Hello world');
+              }}
+            >
+              or log in to your account
+            </Link>
+          </Space>
+        </Col>
+      </Row>
+    </>
   );
 }

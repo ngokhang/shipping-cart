@@ -44,7 +44,7 @@ function SearchResult(props) {
               </Row>
             </Col>
             <Col style={{ margin: '0 auto' }}>
-              <Pagination defaultCurrent={1} total={totalPage} />
+              <Pagination defaultCurrent={1} total={totalPage} defaultPageSize={25} />
             </Col>
           </Row>
         )}
