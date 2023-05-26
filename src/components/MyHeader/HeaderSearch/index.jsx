@@ -22,6 +22,7 @@ function HeaderSearch(props) {
         const res = await axiosInstance.get(
           `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
         );
+        navigate('search');
         searchContext.setSearchResult(res.data);
         searchContext.setPageSize(res.meta.pagination.pageSize);
       }
@@ -34,7 +35,6 @@ function HeaderSearch(props) {
 
   return (
     <SearchBar
-      onClick={() => navigate('search')}
       placeholder="Search products"
       suffix={<SearchOutlined />}
       onChange={e => handleOnChange(e)}
