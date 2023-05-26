@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import './style.scss';
 
 
-function ProductCard({ imgUrl, name, price, id }) {
+function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'VND',

@@ -7,9 +7,14 @@ import ProductCard from '../../../../components/ProductCard';
 import axiosInstance from '../../../../shared/services/http-client';
 import { MySlick } from './style';
 import './style.scss';
+import { useNavigate } from 'react-router-dom';
 
 function SliderProduct({ title }) {
   const [productList, setProductList] = useState([]);
+  const navigate = useNavigate();
+  const handleOnClickProduct = (index) => {
+    navigate(`products/${index}`);
+  }
   const fetchData = async () => {
     const response = (await axiosInstance.get(`products`)).data;
     const _productsList = response.filter(item => item.id < 13).map(item => item.attributes);
