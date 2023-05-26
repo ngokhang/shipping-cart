@@ -5,12 +5,9 @@ import Profile from '../pages/Profile';
 import Register from '../pages/Authentication/Register';
 import Homepage from '../pages/Homepage';
 import SearchResult from '../pages/SearchResult';
-<<<<<<< HEAD
-import ViewProduct from '../pages/View_product_detail';
-=======
 import Clothes from '../pages/Clothes';
 import Shoes from '../pages/SportShoes';
->>>>>>> f2c6cf97a2f8169327d14750dffa0b47ed1a0ee9
+import ViewProduct from '../pages/View_product_detail';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +19,7 @@ const router = createBrowserRouter([
         element: <Homepage />,
       },
       {
-        path: '/home',
+        path: 'home',
         element: <Homepage />,
       },
       {
@@ -40,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: 'sportshoes',
         element: <Shoes />,
+      },
+      {
+        path: 'products/:id',
+        element: <ViewProduct />,
       },
     ],
   },

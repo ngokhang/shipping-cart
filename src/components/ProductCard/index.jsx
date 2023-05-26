@@ -11,14 +11,14 @@ function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
   });
 
   return (
-    <NavLink to="#" className="product-card">
+    <NavLink to={`products/${id}`} className="product-card">
       <div className="card-image">
         <img src={imgUrl} alt="" className='image' />
         <ShoppingCartOutlined className='cart-icon' />
       </div>
       <div className="card-content">
         <p className='text'>{name}</p>
-        <p className="cost">đ <sub className='text'>{formatter.format(price)}</sub></p>
+        <p className="cost"><sub className='text'>{formatter.format(price)}</sub></p>
       </div>
     </NavLink>
   );

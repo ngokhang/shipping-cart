@@ -15,7 +15,7 @@ function App() {
         <Outlet />
       </Content>
       <FooterLayout />
-      
+
     </Layout>
   );
 }
