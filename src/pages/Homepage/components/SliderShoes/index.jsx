@@ -8,12 +8,15 @@ import axiosInstance from '../../../../shared/services/http-client';
 import { MySlick } from './style';
 import './style.scss';
 
-function SliderShoes({ title }) {
-  const [productList, setProductList] = useState([]);
+function SliderShoes(props) {
+  const [productList, setProductList] = useState();
+  const [title, setTitle] = useState();
   const fetchData = async () => {
-    const response = (await axiosInstance.get(`products`)).data;
-    const _productsList = response.filter(item => item.id >= 13).map(item => item.attributes);
-    setProductList(_productsList);
+    const response = (await axiosInstance.get(`categories?populate=products`));
+    const dataClothes = response.data.filter(item => item.id === 2);
+    const listProducts = dataClothes[0].attributes;
+    setTitle(listProducts.name);
+    setProductList(listProducts.products.data);
   };
   const settings = {
     arrows: true,
@@ -34,12 +37,12 @@ function SliderShoes({ title }) {
       </Col>
       <Col xs={24}>
         <MySlick {...settings}>
-          {productList.map((product, index) => (
+          {productList?.map((product, index) => (
             <ProductCard
-              name={product.name}
-              price={product.price}
-              imgUrl={product.image}
-              id={index + 1}
+              name={product.attributes.name}
+              price={product.attributes.price}
+              imgUrl={product.attributes.image}
+              id={product.id}
               key={index}
             />
           ))}

@@ -5,9 +5,9 @@ import Profile from '../pages/Profile';
 import Register from '../pages/Authentication/Register';
 import Homepage from '../pages/Homepage';
 import SearchResult from '../pages/SearchResult';
+import ViewProduct from '../pages/View_product_detail';
 import Clothes from '../pages/Clothes';
 import Shoes from '../pages/SportShoes';
-import ViewProduct from '../pages/View_product_detail';
 
 const router = createBrowserRouter([
   {
@@ -16,10 +16,6 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Homepage />,
-      },
-      {
-        path: 'home',
         element: <Homepage />,
       },
       {

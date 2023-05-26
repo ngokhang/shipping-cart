@@ -11,7 +11,7 @@ function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
   });
 
   return (
-    <NavLink to={`products/${id}`} className="product-card">
+    <NavLink to={`../products/${id}`} className="product-card">
       <div className="card-image">
         <img src={imgUrl} alt="" className='image' />
         <ShoppingCartOutlined className='cart-icon' />
