@@ -18,7 +18,7 @@ function ProductCard({ imgUrl, name, price, id }) {
       </div>
       <div className="card-content">
         <p className='text'>{name}</p>
-        <p className="cost">đ <sub className='text'>{formatter.format(price)}</sub></p>
+        <p className="cost"><sub className='text'>{formatter.format(price)}</sub></p>
       </div>
     </NavLink>
   );
