@@ -21,7 +21,7 @@ const ProductListShoes = () => {
   const fetchProducts = async (currentPage) => {
     try {
       setLoading(true); // Hiển thị hiệu ứng loading
-  
+
       const response = await axiosInstance.get('products', {
         params: {
           'pagination[page]': currentPage,
@@ -29,10 +29,10 @@ const ProductListShoes = () => {
           'filters[category]': 2
         }
       });
-  
-      const data = response.data.map(item => item.attributes);
-      setProducts(data);
-      setQuantityProduct(data.length);
+
+      setProducts(response.data);
+      setQuantityProduct(response.data.length);
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -58,7 +58,7 @@ const ProductListShoes = () => {
           </Menu>
 
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <div style={{ position: 'absolute', top: '50px', right: '20px', margin: '20px 60px 20px 0' }}>
+            <div style={{ margin: '20px 60px 20px 0', marginLeft: 'auto' }}>
               <h1>Product found: {quantityProduct}</h1>
             </div>
 
@@ -66,7 +66,7 @@ const ProductListShoes = () => {
               {
                 products.map((item, index) => (
                   <Col key={index} md={6}>
-                    <ProductCard imgUrl={item.image} name={item.name} price={item.price} id={index + 1} />
+                    <ProductCard imgUrl={item.attributes.image} name={item.attributes.name} price={item.attributes.price} id={item.id} />
                   </Col>
                 ))
               }

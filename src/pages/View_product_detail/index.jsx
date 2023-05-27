@@ -1,48 +1,52 @@
-import React, { Component, useEffect } from 'react'
-import productDetail02 from './productDetail02.png'
-import './style.css';
-import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Space } from 'antd';
-import {useState} from 'react'
-import axiosInstance from '../../shared/services/http-client';
-import SliderProduct from '../Homepage/components/SliderProduct';
+import { Button, Col, Row, Select, Space, Spin } from 'antd';
+import Title from 'antd/es/typography/Title';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axiosInstance from '../../shared/services/http-client';
+import { Context } from '../../store/Context';
+import SliderProduct from '../Homepage/components/SliderProduct';
+import './style.scss';
 
-const items = [
-    {
-      label: <button>S</button>,
-      key: '0',
-    },
-    {
-      label: <button>L</button>,
-      key: '1',
-    },
-    // {
-    //   type: 'divider',
-    // },
-    {
-      label: <button>XL</button>,
-      key: '2',
-    },
-  ];
-
-export default function ViewProduct() {
+export default function ViewProduct(props) {
     const params = useParams();
+    const context = useContext(Context);
+    const isLogin = context.isLogin;
+    const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState(1);
-    const [data,setData] = useState();
- 
-    const fetchData = async (id) => {
-        const res = await axiosInstance.get(`products/${id}`);
-        console.log(res);
+    const [productData, setProductData] = useState({});
+    let typeProduct = 0;
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.get(`products/${params.id}`);
+            setProductData(response.data.attributes);
+        } catch (e) {
+            console.log('Product detail : ', e);
+        } finally {
+            setLoading(false);
+        }
     }
 
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'VND',
+    });
+
+    if (params.id >= 31 && params.id <= 60) {
+        typeProduct = 1;
+    } else {
+        typeProduct = 2;
+    }
     useEffect(() => {
-        fetchData(params.id);
-    }, []);
+        fetchData();
+        setQuantity(1);
+        window.scrollTo(0, 0);
+    }, [params.id]);
 
     const decreaseQuantity = () => {
         if (quantity > 1) {
-        setQuantity(quantity - 1);
+            setQuantity(quantity - 1);
         }
     };
 
@@ -52,82 +56,89 @@ export default function ViewProduct() {
     const addToCard = () => {
 
         axiosInstance
-              .post('orders', {data: {
-                "quantity": quantity,
-                "product": 1,
-                "user": 1,
-                "total": quantity * 599000
-            }})
-              .then((response) => {
+            .post('orders', {
+                data: {
+                    "quantity": quantity,
+                    "product": 1,
+                    "user": 1,
+                    "total": quantity * 599000
+                }
+            })
+            .then((response) => {
                 // setPost(response.data);
                 console.log(response);
-              });
+            });
     }
-    return(
-        <div className='container' style={{padding: '40px 188px'}}>
-            <div className='all'>
-                <div className='left'>
-                    <img src={productDetail02} alt="abc" height="633" width="422px"/>
-                </div>
-                <div className='right'>
-                    <div className='text'>Maya Tunic</div>
-                    <div className='price'>đ599,000</div>
-                    <div className='size'>
-                        <div className='sizeText'>Size</div>
-                        <div className='sizeContent'>
-                            <Dropdown
-                                menu={{
-                                items,
-                                }}
-                                trigger={['click']}
-                            >
-                                <a onClick={(e) => e.preventDefault()}>
-                                <Space>
-                                    M
-                                    <DownOutlined />
-                                </Space>
-                                </a>
-                            </Dropdown>
-                        </div>
+    return (
+        <Spin spinning={loading} tip="Loading...">
+            <Row className='detail-container' style={{ paddingTop: '60px' }}>
+                <Col md={8} className='side-left'>
+                    <div className="product-image">
+                        <img src={productData.image} alt="" />
                     </div>
-                    <div className='add'>
-                        <div className='hi'>
-                            <button onClick={decreaseQuantity}>-</button>
-                            <input type="text" value={quantity} readOnly  />
-                            <button onClick={increaseQuantity}>+</button>
+                </Col>
+                <Col md={10} className='side-right'>
+                    <div className="content">
+                        <Title level={3}>{productData.name}</Title>
+                        <div className="price">
+                            <span>{formatter.format(productData.price)}</span>
                         </div>
-                        <div className='addtocart' onClick={addToCard}>
-                            <Button>ADD TO CART</Button>
-                   
+                        <div className="size">
+                            <span>Size: </span>
+                            <Space wrap>
+                                <Select
+                                    defaultValue="S"
+                                    style={{
+                                        width: 120,
+                                        marginLeft: '15px'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'S',
+                                            label: 'S',
+                                        },
+                                        {
+                                            value: 'M',
+                                            label: 'M',
+                                        },
+                                        {
+                                            value: 'L',
+                                            label: 'L',
+                                        },
+                                        {
+                                            value: 'XL',
+                                            label: 'XL',
+                                        },
+                                    ]}
+                                />
+                            </Space>
                         </div>
-                    </div>
-                    <div>
-                        <div className='text'>Description</div>
-                        <hr/>
-                        <div className='content'>
-                            <div className='box'>
-                                <p>I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                    I was looking for a bright light for the kitchen but wanted some item more modern than a strip light. this one is perfect, very bright and looks great. I can't comment on interlation as I had an electrition instal it. Would recommend...
-                                </p>
-                                
+                        <div className="buttons">
+                            <div className="button-quantity">
+                                <button className='decrease-btn' disabled={quantity <= 0 ? true : false} onClick={decreaseQuantity}><span>-</span></button>
+                                <span className='text'>{quantity}</span>
+                                <button className="increase-btn" disabled={quantity >= 10 ? true : false} onClick={increaseQuantity}><span>+</span></button>
+                            </div>
+                            <div className="button-add">
+                                <Button title='ADD TO CART' type='primary' color='black' size='large' disabled={isLogin ? false : true}>ADD TO CART</Button>
+                            </div>
+                        </div>
+                        <div className="description">
+                            <div className='title'>Description</div>
+                            <hr style={{ height: '2px' }} />
+                            <div className="text-view">
+                                {productData.description}
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div style={{marginTop: '50px'}}>
-                <p style={{textAlign : 'center'}}>Similar Products</p>
-                <SliderProduct/>
-            </div>
-            
-        </div>
+                </Col>
+                <Col md={24} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: '80px', marginBottom: '160px' }}>
+                    <h3 style={{ fontSize: '42px', lineHeight: '67px', color: '#1D1F22' }}>Similar Product</h3>
+                    <Col xs={24} >
+                        <SliderProduct title={'Sport shoes'} idProduct={typeProduct} />
+                    </Col>
+                </Col>
+            </Row>
+        </Spin >
     )
 }

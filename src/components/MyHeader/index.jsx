@@ -21,7 +21,7 @@ function getItem(label, key, icon, children) {
 }
 
 function MyHeader(props) {
-  const navList = ['home', 'clothes', 'sport shoes'];
+  const navList = ['clothes', 'sport shoes'];
   const loginContext = useContext(Context);
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -84,6 +84,11 @@ function MyHeader(props) {
         <HeaderMenu mode="horizontal">
           <MenuItem className="no-bd">
             <HeaderLogo />
+          </MenuItem>
+          <MenuItem>
+            <Link to={`/`}>
+              HOME
+            </Link>
           </MenuItem>
           {navList.map((item, index) => (
             <MenuItem key={index} defaultChecked={index === 0 ? true : false}>

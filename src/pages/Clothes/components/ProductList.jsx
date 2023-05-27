@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Card, Menu, Row, Col, Spin} from 'antd';
-import { Link } from 'react-router-dom';
+import { Pagination, Card, Menu, Row, Col, Spin } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../shared/services/http-client';
 import ProductCard from '../../../components/ProductCard'
 
@@ -13,6 +13,11 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [quantityProduct, setQuantityProduct] = useState(0);
+  const navigate = useNavigate();
+
+  const handleOnClickProduct = (id) => {
+    navigate(`products/${id}`)
+  }
 
   useEffect(() => {
     fetchProducts(currentPage);
@@ -21,7 +26,7 @@ const ProductList = () => {
   const fetchProducts = async (currentPage) => {
     try {
       setLoading(true); // Hiển thị hiệu ứng loading
-  
+
       const response = await axiosInstance.get('products', {
         params: {
           'pagination[page]': currentPage,
@@ -29,16 +34,16 @@ const ProductList = () => {
           'filters[category]': 1
         }
       });
-  
-      const data = response.data.map(item => item.attributes);
-      setProducts(data);
-      setQuantityProduct(data.length);
+
+      setProducts(response.data);
+      setQuantityProduct(response.data.length);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false); // Ẩn hiệu ứng loading
     }
   };
+
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -58,7 +63,7 @@ const ProductList = () => {
           </Menu>
 
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <div style={{ position: 'absolute', top: '50px', right: '20px', margin: '20px 60px 20px 0' }}>
+            <div style={{ margin: '20px 60px 20px 0', marginLeft: 'auto' }}>
               <h1>Product found: {quantityProduct}</h1>
             </div>
 
@@ -66,7 +71,7 @@ const ProductList = () => {
               {
                 products.map((item, index) => (
                   <Col key={index} md={6}>
-                    <ProductCard imgUrl={item.image} name={item.name} price={item.price} id={index + 1} />
+                    <ProductCard imgUrl={item.attributes.image} name={item.attributes.name} price={item.attributes.price} id={item.id} />
                   </Col>
                 ))
               }

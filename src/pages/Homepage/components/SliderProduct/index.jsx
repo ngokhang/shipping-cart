@@ -7,19 +7,19 @@ import ProductCard from '../../../../components/ProductCard';
 import axiosInstance from '../../../../shared/services/http-client';
 import { MySlick } from './style';
 import './style.scss';
-import { useNavigate } from 'react-router-dom';
 
-function SliderProduct({ title }) {
-  const [productList, setProductList] = useState([]);
-  const navigate = useNavigate();
-  const handleOnClickProduct = (index) => {
-    navigate(`products/${index}`);
-  }
+function SliderProduct({ idProduct, isShowTitle }) {
+  const [productList, setProductList] = useState();
+  const [title, setTitle] = useState();
   const fetchData = async () => {
-    const response = (await axiosInstance.get(`products`)).data;
-    const _productsList = response.filter(item => item.id < 13).map(item => item.attributes);
-    setProductList(_productsList);
+    const response = (await axiosInstance.get(`categories?populate=products`));
+    const dataClothes = response.data.filter(item => item.id === idProduct);
+    console.log(1111, dataClothes, idProduct);
+    const listProducts = dataClothes[0].attributes;
+    setTitle(listProducts.name);
+    setProductList(listProducts.products.data);
   };
+
   const settings = {
     arrows: true,
     // dots: true,
@@ -33,19 +33,22 @@ function SliderProduct({ title }) {
   }, []);
   return (
     <Row>
-      <Col xs={24}>
-        <Title level={1} color="#1D1F22">
-          {title}
-        </Title>
-      </Col>
+      {
+        isShowTitle && <Col xs={24}>
+          <Title level={1} color="#1D1F22">
+            {title}
+          </Title>
+        </Col>
+      }
+
       <Col xs={24}>
         <MySlick {...settings}>
-          {productList.map((product, index) => (
+          {productList?.map((product, index) => (
             <ProductCard
-              name={product.name}
-              price={product.price}
-              imgUrl={product.image}
-              id={index + 1}
+              name={product.attributes.name}
+              price={product.attributes.price}
+              imgUrl={product.attributes.image}
+              id={product.id}
               key={index}
             />
           ))}

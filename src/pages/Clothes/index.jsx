@@ -1,9 +1,9 @@
 import React from 'react';
 import ProductList from '../Clothes/components/ProductList';
 
-function Clothes(){
+function Clothes() {
   return (
-    <div>
+    <div style={{ paddingTop: '20px' }}>
       <h1>Categories</h1>
       <ProductList />
     </div>
