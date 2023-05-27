@@ -8,12 +8,13 @@ import axiosInstance from '../../../../shared/services/http-client';
 import { MySlick } from './style';
 import './style.scss';
 
-function SliderProduct(props) {
+function SliderProduct({ idProduct, isShowTitle }) {
   const [productList, setProductList] = useState();
   const [title, setTitle] = useState();
   const fetchData = async () => {
     const response = (await axiosInstance.get(`categories?populate=products`));
-    const dataClothes = response.data.filter(item => item.id === 1);
+    const dataClothes = response.data.filter(item => item.id === idProduct);
+    console.log(1111, dataClothes, idProduct);
     const listProducts = dataClothes[0].attributes;
     setTitle(listProducts.name);
     setProductList(listProducts.products.data);
@@ -32,11 +33,14 @@ function SliderProduct(props) {
   }, []);
   return (
     <Row>
-      <Col xs={24}>
-        <Title level={1} color="#1D1F22">
-          {title}
-        </Title>
-      </Col>
+      {
+        isShowTitle && <Col xs={24}>
+          <Title level={1} color="#1D1F22">
+            {title}
+          </Title>
+        </Col>
+      }
+
       <Col xs={24}>
         <MySlick {...settings}>
           {productList?.map((product, index) => (
