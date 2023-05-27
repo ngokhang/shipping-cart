@@ -1,8 +1,8 @@
 import { ShoppingCartOutlined } from '@ant-design/icons/lib/icons';
 import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import './style.scss';
+import { useNavigate } from 'react-router-dom';
 import { Context } from '../../store/Context';
+import './style.scss';
 
 
 function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
@@ -27,7 +27,7 @@ function ProductCard({ imgUrl, name, price, id, handleOnClickProduct }) {
   }
 
   return (
-    <div className="product-card" onClick={e => handleOnClickCard(e)}>
+    <div className="product-card" onClick={e => handleOnClickCard(e)} style={{ cursor: 'pointer' }}>
       <div className="card-image">
         <img src={imgUrl} alt="" className='image' />
         <ShoppingCartOutlined className='cart-icon' onClick={e => handleOnClickCart(e)} />
