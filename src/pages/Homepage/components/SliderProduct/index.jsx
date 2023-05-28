@@ -14,7 +14,6 @@ function SliderProduct({ idProduct, isShowTitle }) {
   const fetchData = async () => {
     const response = (await axiosInstance.get(`categories?populate=products`));
     const dataClothes = response.data.filter(item => item.id === idProduct);
-    console.log(1111, dataClothes, idProduct);
     const listProducts = dataClothes[0].attributes;
     setTitle(listProducts.name);
     setProductList(listProducts.products.data);

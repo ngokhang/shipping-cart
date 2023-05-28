@@ -1,15 +1,15 @@
+import { BarsOutlined, UserOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import MenuItem from 'antd/es/menu/MenuItem';
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Context } from '../../store/Context';
 import HeaderAccount from './HeaderAccount';
 import HeaderCart from './HeaderCart';
 import HeaderLogo from './HeaderLogo';
 import HeaderSearch from './HeaderSearch';
 import { DrawerMenuTop, HeaderContainer, HeaderMenu } from './style';
-import { Drawer, Menu, Tabs } from 'antd';
-import { BarsOutlined, UserOutlined } from '@ant-design/icons';
 import './style.scss';
-import { Context } from '../../store/Context';
-import { Link, NavLink } from 'react-router-dom';
 
 function getItem(label, key, icon, children) {
   return {
@@ -24,12 +24,15 @@ function MyHeader(props) {
   const navList = ['clothes', 'sport shoes'];
   const loginContext = useContext(Context);
   const [open, setOpen] = useState(false);
+
+
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
+
 
   const ITEMS_GUEST = [
     getItem('Account', 'sub1', <UserOutlined />, [

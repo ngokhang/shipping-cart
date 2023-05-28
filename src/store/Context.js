@@ -12,6 +12,7 @@ const Context = createContext({
   searchRef: {},
   pageSize: 0,
   setPageSize: () => {},
+  userId: null,
 });
 function ContextProvider({ children }) {
   const [isLogin, setIsLogin] = useState(false);
@@ -19,10 +20,12 @@ function ContextProvider({ children }) {
   const [productsInCart, setProductsInCart] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [pageSize, setPageSize] = useState();
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     const currentTime = Math.floor(Date.now() / 1000);
     const expirationTime = parseJWT(localStorage.getItem('at'));
+    setUserId(parseJWT(localStorage.getItem('at')).id);
     if (currentTime > expirationTime) {
       console.log('The token has expired');
       setIsLogin(false);
@@ -44,6 +47,7 @@ function ContextProvider({ children }) {
         setSearchKeyword,
         pageSize,
         setPageSize,
+        userId,
       }}
     >
       {children}

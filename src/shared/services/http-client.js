@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ACCESS_TOKEN } from '../constants';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:1337/api',
+  baseURL: 'http://localhost:1337/api/',
   headers: {
     Accept: 'applications/json',
     'Content-Type': 'application/json',
@@ -54,6 +54,37 @@ export const postRegisterUser = async (
     address,
     phoneNumber,
   });
+};
+
+export const postCreateOrder = async (userId, productId, quantity, total) => {
+  const payload = {
+    data: {
+      quantity,
+      product: productId,
+      user: userId,
+      total,
+    },
+  };
+  return axiosInstance.post('orders', payload);
+};
+
+export const getOrderList = async userId => {
+  return axiosInstance.get(
+    `orders?populate=product&filters[user][id]=${userId}`
+  );
+};
+
+export const putUpdateOrder = async (orderId, quantity) => {
+  const payload = {
+    data: {
+      quantity,
+    },
+  };
+  return axiosInstance.put(`orders/${orderId}`, payload);
+};
+
+export const deleteOrder = async orderId => {
+  return axiosInstance.delete(`orders/${orderId}`);
 };
 
 export default axiosInstance;
