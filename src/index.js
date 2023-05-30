@@ -8,17 +8,21 @@ import './index.scss';
 import { ContextProvider } from './store/Context';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <ContextProvider>
-    <StrictMode>
-      {/* <App /> */}
-      <RouterProvider router={router} />
-    </StrictMode>
-  </ContextProvider>
+  <Provider store={store}>
+    <ContextProvider>
+      <StrictMode>
+        {/* <App /> */}
+        <RouterProvider router={router} />
+      </StrictMode>
+    </ContextProvider>
+  </Provider>
 );
 
 // If you want your app to work offline and load faster, you can change

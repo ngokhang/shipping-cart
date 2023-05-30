@@ -14,7 +14,6 @@ function SliderProduct({ idProduct, isShowTitle }) {
   const fetchData = async () => {
     const response = (await axiosInstance.get(`categories?populate=products`));
     const dataClothes = response.data.filter(item => item.id === idProduct);
-    console.log(1111, dataClothes, idProduct);
     const listProducts = dataClothes[0].attributes;
     setTitle(listProducts.name);
     setProductList(listProducts.products.data);
@@ -44,13 +43,15 @@ function SliderProduct({ idProduct, isShowTitle }) {
       <Col xs={24}>
         <MySlick {...settings}>
           {productList?.map((product, index) => (
-            <ProductCard
-              name={product.attributes.name}
-              price={product.attributes.price}
-              imgUrl={product.attributes.image}
-              id={product.id}
-              key={index}
-            />
+            <div>
+              <ProductCard
+                name={product.attributes.name}
+                price={product.attributes.price}
+                imgUrl={product.attributes.image}
+                id={product.id}
+                key={index}
+              />
+            </div>
           ))}
         </MySlick>
       </Col>
