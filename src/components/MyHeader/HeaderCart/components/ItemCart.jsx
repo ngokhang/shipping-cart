@@ -1,35 +1,37 @@
-import React, { useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { decreaseQuantity, decreaseQuantityProduct, deleteOrderAPI, increaseQuantity, increaseQuantityProduct, removeItem, updateOrder, updateWhenRemoveQuantityOrder } from '../../../../features/orders/orderSlide';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { decreaseQuantity, decreaseQuantityProduct, deleteOrderAPI, increaseQuantity, increaseQuantityProduct, updateOrder, updateWhenRemoveQuantityOrder } from '../../../../features/orders/orderSlide';
 import { formatter } from '../../../../shared/constants';
 import { Context } from '../../../../store/Context';
 import './ItemCart.scss';
 
 function ItemCart({ name, price, imgUrl, quantityProduct, orderId, indexInArray }) {
-  const ContextProvider = useContext(Context);
+  const userId = localStorage.getItem('userId');
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(quantityProduct);
+  const quantityOrders = useSelector(state => state.orders.quantityOrders)
 
-
+  useEffect(() => {
+    setQuantity(quantityProduct);
+  }, [quantityProduct])
 
   const handleOnClickDecrease = async () => {
     setQuantity(quantity - 1);
     dispatch(decreaseQuantity());
     dispatch(decreaseQuantityProduct());
-    dispatch(updateOrder({ orderId, quantity: quantityProduct - 1, userId: ContextProvider.userId }));
+    dispatch(updateOrder({ orderId, quantity: quantityProduct - 1, userId }));
   }
 
   const handleOnClickIncrease = async () => {
     setQuantity(quantity + 1);
     dispatch(increaseQuantity());
     dispatch(increaseQuantityProduct());
-    dispatch(updateOrder({ orderId, quantity: quantityProduct + 1, userId: ContextProvider.userId }));
+    dispatch(updateOrder({ orderId, quantity: quantityProduct + 1, userId }));
   }
 
   const handleOnClickRemove = async () => {
-    dispatch(deleteOrderAPI({ orderId, userId: ContextProvider.userId }));
+    dispatch(deleteOrderAPI({ orderId, userId }));
     dispatch(updateWhenRemoveQuantityOrder(indexInArray));
-    dispatch(removeItem(indexInArray));
   }
 
   return (

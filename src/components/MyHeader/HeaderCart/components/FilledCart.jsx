@@ -1,35 +1,30 @@
 import { Button, Spin } from 'antd';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOrdereList } from '../../../../features/orders/orderSlide';
 import { formatter } from '../../../../shared/constants';
 import './FilledCart.scss';
 import ItemCart from './ItemCart';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchOrdereList } from '../../../../features/orders/orderSlide';
-import { Context } from '../../../../store/Context';
 
 function FilledCart(props) {
-  const { _orderList, quantityOrders } = props;
+  const { _orderList } = props;
   const loading = useSelector(state => state.orders.isLoading);
   const userId = localStorage.getItem('userId');
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchOrdereList(userId));
-    console.log('filledd cart');
-  }, [dispatch, userId, quantityOrders])
+  }, [dispatch, userId])
 
   const calcTotalPrice = () => {
-    return _orderList.filter(item => {
-      if (item.attributes.product.data !== null) return true;
-      return false;
-    }).reduce((curr, next) => {
+    return _orderList.reduce((curr, next) => {
       return next.attributes.quantity * next.attributes.product.data.attributes.price + curr;
     }, 0)
   }
   const totalPrice = calcTotalPrice();
 
   return (
-    <>
+    <Spin spinning={loading} tip="Loading" style={{ padding: '15px 5px !important' }}>
       <ul className='list-orders'>
         {
           _orderList?.filter(item => {
@@ -48,12 +43,12 @@ function FilledCart(props) {
         <span>{formatter.format(totalPrice)}</span>
       </div>
 
-      <Button className="btn-checkout" block>
+      <Button className="btn-checkout" block style={{ marginBottom: '15px' }}>
         CHECKOUT
       </Button>
 
 
-    </>
+    </Spin>
   );
 }
 

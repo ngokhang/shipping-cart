@@ -10,6 +10,7 @@ const initialState = {
   orderList: [],
   quantityOrders: 0,
   quantityProduct: 1,
+  isLoading: false,
 };
 
 export const fetchOrdereList = createAsyncThunk(
@@ -22,23 +23,25 @@ export const fetchOrdereList = createAsyncThunk(
 
 export const updateOrder = createAsyncThunk(
   'orders/updateOrder',
-  async ({ orderId, quantity, userId }) => {
+  async ({ orderId, quantity, userId }, thunkAPI) => {
     const res = await putUpdateOrder(orderId, quantity);
+    thunkAPI.dispatch(fetchOrdereList(userId));
   }
 );
 
 export const deleteOrderAPI = createAsyncThunk(
   'orders/deleteOrder',
-  async ({ orderId, userId }) => {
+  async ({ orderId, userId }, thunkAPI) => {
     const res = await deleteOrder(orderId);
+    thunkAPI.dispatch(fetchOrdereList(userId));
   }
 );
 
 export const createOrderAPI = createAsyncThunk(
   'orders/createOrder',
-  async ({ quantity, product, user, total }) => {
+  async ({ quantity, product, user, total }, thunkAPI) => {
     const res = await postCreateOrder(quantity, product, user, total);
-    await getOrderList(user);
+    thunkAPI.dispatch(fetchOrdereList(user));
   }
 );
 
@@ -77,12 +80,27 @@ export const orderSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchOrdereList.pending]: (state, action) => {},
+    [fetchOrdereList.pending]: (state, action) => {
+      state.isLoading = true;
+    },
     [fetchOrdereList.fulfilled]: (state, action) => {
       state.orderList = action.payload;
       state.quantityOrders = state.orderList.reduce((curr, next) => {
         return next.attributes.quantity + curr;
       }, 0);
+      state.isLoading = false;
+    },
+    [deleteOrderAPI.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [deleteOrderAPI.fulfilled]: (state, action) => {
+      state.isLoading = false;
+    },
+    [createOrderAPI.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [createOrderAPI.fulfilled]: (state, action) => {
+      state.isLoading = false;
     },
   },
 });

@@ -14,11 +14,9 @@ function HeaderCart(props) {
   const quantityOrders = useSelector(state => state.orders.quantityOrders);
   const list = useSelector(state => state.orders.orderList);
 
-  // console.log(list);
-
-  // useEffect(() => {
-  //   dispatch(fetchOrdereList(userId));
-  // }, [dispatch, open, quantityOrders, userId]);
+  useEffect(() => {
+    dispatch(fetchOrdereList(userId));
+  }, [dispatch, open, userId]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -35,7 +33,7 @@ function HeaderCart(props) {
 
           <DrawerCart title={`Total item: ${quantityOrders}`} placement="right" onClose={onClose} open={open}>
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {list.length === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={list} quantityOrders={quantityOrders} />)}
+              {list.length === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={list} />)}
 
             </div>
           </DrawerCart>

@@ -24,70 +24,70 @@ function getItem(label, key, icon, children) {
 
 function MyHeader(props) {
   const navList = ['clothes', 'sport shoes'];
-  const loginContext = useContext(Context);
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  // const loginContext = useContext(Context);
+  // const [open, setOpen] = useState(false);
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchOrdereList(localStorage.getItem('userId')));
-  }, [dispatch, open]);
-
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  // useEffect(() => {
+  //   dispatch(fetchOrdereList(localStorage.getItem('userId')));
+  // }, [dispatch]);
 
 
-  const ITEMS_GUEST = [
-    getItem('Account', 'sub1', <UserOutlined />, [
-      {
-        label: <a href="#">Login</a>,
-        key: 'Login',
-        onClick: () => {
-          console.log('login clicked');
-        },
-      },
-      {
-        label: <a href="#">Register</a>,
-        key: 'Register',
-        onClick: () => {
-          console.log('register clicked');
-        },
-      },
-    ]),
-  ];
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
+  // const onClose = () => {
+  //   setOpen(false);
+  // };
 
-  const ITEMS_USER = [
-    getItem('Account', 'sub1', <UserOutlined />, [
-      {
-        label: (
-          <a href="#" onClick={e => e.preventDefault()}>
-            My profile
-          </a>
-        ),
-        key: 'Login',
-        onClick: e => {
-          console.log('profile clicked');
-        },
-      },
-      {
-        label: (
-          <a href="#" onClick={e => e.preventDefault()}>
-            Logout
-          </a>
-        ),
-        key: 'Register',
-        onClick: e => {
-          localStorage.clear();
-          loginContext.setIsLogin(false);
-          console.log('register clicked');
-        },
-      },
-    ]),
-  ];
+
+  // const ITEMS_GUEST = [
+  //   getItem('Account', 'sub1', <UserOutlined />, [
+  //     {
+  //       label: <a href="#">Login</a>,
+  //       key: 'Login',
+  //       onClick: () => {
+  //         console.log('login clicked');
+  //       },
+  //     },
+  //     {
+  //       label: <a href="#">Register</a>,
+  //       key: 'Register',
+  //       onClick: () => {
+  //         console.log('register clicked');
+  //       },
+  //     },
+  //   ]),
+  // ];
+
+  // const ITEMS_USER = [
+  //   getItem('Account', 'sub1', <UserOutlined />, [
+  //     {
+  //       label: (
+  //         <a href="#" onClick={e => e.preventDefault()}>
+  //           My profile
+  //         </a>
+  //       ),
+  //       key: 'Login',
+  //       onClick: e => {
+  //         console.log('profile clicked');
+  //       },
+  //     },
+  //     {
+  //       label: (
+  //         <a href="#" onClick={e => e.preventDefault()}>
+  //           Logout
+  //         </a>
+  //       ),
+  //       key: 'Register',
+  //       onClick: e => {
+  //         localStorage.clear();
+  //         loginContext.setIsLogin(false);
+  //         console.log('register clicked');
+  //       },
+  //     },
+  //   ]),
+  // ];
   return (
     <>
       <HeaderContainer className="desktop-menu">
@@ -121,7 +121,7 @@ function MyHeader(props) {
         </HeaderMenu>
       </HeaderContainer>
 
-      <HeaderContainer className="mobile-menu">
+      {/* <HeaderContainer className="mobile-menu">
         <HeaderMenu mode="horizontal">
           <MenuItem className="no-bd">
             <HeaderLogo />
@@ -159,7 +159,7 @@ function MyHeader(props) {
             className="header__menu-account"
           />
         </DrawerMenuTop>
-      </HeaderContainer>
+      </HeaderContainer> */}
     </>
   );
 }

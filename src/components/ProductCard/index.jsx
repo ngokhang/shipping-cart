@@ -29,12 +29,6 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
 
       if (orderListClone.length === 0) {
         dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
-
-        setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-          window.location.reload();
-        }, 2000);
         toast.success('Added this product to your cart!', {
           position: "top-right",
           autoClose: 350,
@@ -63,13 +57,7 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
               theme: "light",
             });
             dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId: context.userId }));
-            dispatch(fetchOrdereList(localStorage.getItem('userId')));
             dispatch(increaseQuantityProduct());
-            setLoading(true);
-            setTimeout(() => {
-              setLoading(false);
-              window.location.reload();
-            }, 2000);
 
             return true;
           }
@@ -78,12 +66,6 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
         return;
       }
       dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        window.location.reload();
-      }, 2000);
-
       toast.success('Added this product to your cart!', {
         position: "top-right",
         autoClose: 350,

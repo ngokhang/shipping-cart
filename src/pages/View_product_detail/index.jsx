@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createOrderAPI, fetchOrdereList, getQuantityProduct, updateOrder } from '../../features/orders/orderSlide';
+import { createOrderAPI, updateOrder } from '../../features/orders/orderSlide';
 import axiosInstance from '../../shared/services/http-client';
 import { Context } from '../../store/Context';
 import SliderProduct from '../Homepage/components/SliderProduct';
@@ -17,8 +17,7 @@ export default function ViewProduct(props) {
     const [productData, setProductData] = useState({});
     const orderList = useSelector(state => state.orders.orderList);
     const dispatch = useDispatch();
-    const quantityProduct = useSelector(state => state.orders.quantityProduct);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false) // in Redux
     const [quantity, setQuantity] = useState(1);
     let typeProduct = 0;
 
@@ -27,15 +26,14 @@ export default function ViewProduct(props) {
 
     const fetchData = async () => {
         try {
-            setLoading(true);
+            setIsLoading(true)
             const response = await axiosInstance.get(`products/${params.id}`);
             setProductData(response.data.attributes);
-            dispatch(getQuantityProduct(Number.parseInt(params.id)));
 
         } catch (e) {
             console.log('Product detail : ', e);
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -50,11 +48,10 @@ export default function ViewProduct(props) {
         typeProduct = 2;
     }
     useEffect(() => {
-        dispatch(fetchOrdereList(context.userId));
         fetchData();
         window.scrollTo(0, 0);
 
-    }, [params.id, dispatch, context.userId]);
+    }, [dispatch, params.id]);
 
     const decreaseQuantity = () => {
         if (quantity > 1) {
@@ -69,12 +66,11 @@ export default function ViewProduct(props) {
         const orderListClone = [...orderList];
 
         if (orderListClone.length === 0) {
-            dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
-            setLoading(true);
+            setIsLoading(true);
             setTimeout(() => {
-                setLoading(false);
-                window.location.reload();
-            }, 2000);
+                setIsLoading(false);
+            }, 1000);
+            dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
             toast.success('Added this product to your cart!', {
                 position: "top-right",
                 autoClose: 350,
@@ -92,12 +88,11 @@ export default function ViewProduct(props) {
 
             orderListClone.some(item => {
                 if (item.attributes.product.data.id === Number.parseInt(params.id)) {
-                    dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + quantity, userId: context.userId }));
-                    setLoading(true);
+                    setIsLoading(true);
                     setTimeout(() => {
-                        setLoading(false);
-                        window.location.reload();
-                    }, 2000);
+                        setIsLoading(false);
+                    }, 1000);
+                    dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + quantity, userId: context.userId }));
                     toast.success('Added this product to your cart!', {
                         position: "top-right",
                         autoClose: 350,
@@ -116,12 +111,11 @@ export default function ViewProduct(props) {
         }
 
         alert('not ');
-        dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
-        setLoading(true);
+        setIsLoading(true);
         setTimeout(() => {
-            setLoading(false);
-            window.location.reload();
-        }, 2000);
+            setIsLoading(false);
+        }, 1000);
+        dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
         toast.success('Added this product to your cart!', {
             position: "top-right",
             autoClose: 350,
@@ -135,7 +129,7 @@ export default function ViewProduct(props) {
         return;
     }
     return (
-        <Spin spinning={loading} tip="Loading...">
+        <Spin spinning={isLoading} tip="Loading...">
             <Row className='detail-container' style={{ paddingTop: '60px' }}>
                 <Col md={8} className='side-left'>
                     <div className="product-image">
