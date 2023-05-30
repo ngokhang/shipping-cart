@@ -22,6 +22,9 @@ export default function ViewProduct(props) {
     const [quantity, setQuantity] = useState(1);
     let typeProduct = 0;
 
+
+    console.log(orderList)
+
     const fetchData = async () => {
         try {
             setLoading(true);
