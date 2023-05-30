@@ -56,12 +56,12 @@ export const postRegisterUser = async (
   });
 };
 
-export const postCreateOrder = async (userId, productId, quantity, total) => {
+export const postCreateOrder = async (quantity, product, user, total) => {
   const payload = {
     data: {
       quantity,
-      product: productId,
-      user: userId,
+      product,
+      user,
       total,
     },
   };
@@ -83,8 +83,8 @@ export const putUpdateOrder = async (orderId, quantity) => {
   return axiosInstance.put(`orders/${orderId}`, payload);
 };
 
-export const deleteOrder = async orderId => {
-  return axiosInstance.delete(`orders/${orderId}`);
+export const deleteOrder = async id => {
+  return axiosInstance.delete(`orders/${id}`);
 };
 
 export default axiosInstance;

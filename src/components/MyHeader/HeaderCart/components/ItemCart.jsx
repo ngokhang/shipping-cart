@@ -1,33 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeItem } from '../../../../features/orders/orderSlide';
+import { decreaseQuantity, deleteOrderAPI, increaseQuantity, removeItem, updateOrder, updateWhenRemoveQuantityOrder } from '../../../../features/orders/orderSlide';
 import { formatter } from '../../../../shared/constants';
-import { deleteOrder } from '../../../../shared/services/http-client';
+import { Context } from '../../../../store/Context';
 import './ItemCart.scss';
 
-function ItemCart({ name, price, imgUrl, id, quantityOrder, orderId }) {
-  const [quantity, setQuantity] = useState(quantityOrder);
-
+function ItemCart({ name, price, imgUrl, quantityProduct, orderId, indexInArray }) {
+  const ContextProvider = useContext(Context);
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(quantityProduct);
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
 
-  const increaseQuantity = () => {
+
+  const handleOnClickDecrease = async () => {
+    setQuantity(quantity - 1);
+    dispatch(decreaseQuantity());
+    dispatch(updateOrder({ orderId, quantity: quantityProduct - 1, userId: ContextProvider.userId }));
+  }
+
+  const handleOnClickIncrease = async () => {
     setQuantity(quantity + 1);
-  };
+    dispatch(increaseQuantity());
+    dispatch(updateOrder({ orderId, quantity: quantityProduct + 1, userId: ContextProvider.userId }));
+  }
 
-  const handleOnClickRemove = async (id) => {
-    dispatch(removeItem(orderId))
-    await deleteOrder(id);
+  const handleOnClickRemove = async () => {
+    dispatch(deleteOrderAPI({ orderId, userId: ContextProvider.userId }));
+    dispatch(updateWhenRemoveQuantityOrder(indexInArray));
+    dispatch(removeItem(indexInArray));
   }
 
   return (
     <div className='item-cart'>
-      <span className='icon-close' onClick={() => handleOnClickRemove(orderId)}>
+      <span className='icon-close' onClick={() => handleOnClickRemove()}>
         <span className='left'></span>
         <span className='right'></span>
       </span>
@@ -42,9 +47,9 @@ function ItemCart({ name, price, imgUrl, id, quantityOrder, orderId }) {
         </div>
         <div className="buttons">
           <div className="button-quantity">
-            <button className='decrease-btn' disabled={quantity <= 0 ? true : false} onClick={decreaseQuantity}><span>-</span></button>
+            <button className='decrease-btn' disabled={quantity <= 1 ? true : false} onClick={() => handleOnClickDecrease()}><span>-</span></button>
             <span className='text'>{quantity}</span>
-            <button className="increase-btn" disabled={quantity >= 10 ? true : false} onClick={increaseQuantity}><span>+</span></button>
+            <button className="increase-btn" onClick={() => handleOnClickIncrease()}><span>+</span></button>
           </div>
         </div>
       </div>

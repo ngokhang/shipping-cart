@@ -1,26 +1,28 @@
-import { Row } from 'antd';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Context } from '../../../store/Context';
-import EmptyCart from './components/EmptyCart';
-import { CartSVG, DrawerCart } from './style';
-import FilledCart from './components/FilledCart';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrdereList } from '../../../features/orders/orderSlide';
-import { deleteOrder } from '../../../shared/services/http-client';
-
-
+import { Context } from '../../../store/Context';
+import EmptyCart from './components/EmptyCart';
+import FilledCart from './components/FilledCart';
+import { CartSVG, DrawerCart } from './style';
 
 function HeaderCart(props) {
   const loginState = useContext(Context);
-  const userId = loginState.userId;
-  const [open, setOpen] = useState(false);
-  const orderList = useSelector(state => state.orders.orderList);
-  const quantityOrders = useSelector(state => state.orders.quantityOrders);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const quantityOrders = useSelector(state => state.orders.quantityOrders);
+  const list = useSelector(state => state.orders.orderList);
+
+
+  const fetchOrderList = () => {
+    const res = dispatch(fetchOrdereList(loginState.userId));
+  }
+
+  console.log(list);
 
   useEffect(() => {
-    dispatch(fetchOrdereList(userId));
-  }, [dispatch, userId, open, quantityOrders]);
+    fetchOrderList();
+  }, [dispatch, open, quantityOrders]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -37,7 +39,7 @@ function HeaderCart(props) {
 
           <DrawerCart title={`Total item: ${quantityOrders}`} placement="right" onClose={onClose} open={open}>
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {quantityOrders === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={orderList} />)}
+              {list.length === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={list} />)}
 
             </div>
           </DrawerCart>

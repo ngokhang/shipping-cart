@@ -1,7 +1,10 @@
 import { Button, Col, Row, Select, Space, Spin } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createOrderAPI, fetchOrdereList, getQuantityProduct, updateOrder } from '../../features/orders/orderSlide';
 import axiosInstance from '../../shared/services/http-client';
 import { Context } from '../../store/Context';
 import SliderProduct from '../Homepage/components/SliderProduct';
@@ -11,9 +14,12 @@ export default function ViewProduct(props) {
     const params = useParams();
     const context = useContext(Context);
     const isLogin = context.isLogin;
+    const [productData, setProductData] = useState({});
+    const orderList = useSelector(state => state.orders.orderList);
+    const dispatch = useDispatch();
+    const quantityProduct = useSelector(state => state.orders.quantityProduct);
     const [loading, setLoading] = useState(false);
     const [quantity, setQuantity] = useState(1);
-    const [productData, setProductData] = useState({});
     let typeProduct = 0;
 
     const fetchData = async () => {
@@ -21,6 +27,8 @@ export default function ViewProduct(props) {
             setLoading(true);
             const response = await axiosInstance.get(`products/${params.id}`);
             setProductData(response.data.attributes);
+            dispatch(getQuantityProduct(Number.parseInt(params.id)));
+
         } catch (e) {
             console.log('Product detail : ', e);
         } finally {
@@ -39,10 +47,11 @@ export default function ViewProduct(props) {
         typeProduct = 2;
     }
     useEffect(() => {
+        dispatch(fetchOrdereList(context.userId));
         fetchData();
-        setQuantity(1);
         window.scrollTo(0, 0);
-    }, [params.id]);
+
+    }, [params.id, dispatch, context.userId]);
 
     const decreaseQuantity = () => {
         if (quantity > 1) {
@@ -54,20 +63,61 @@ export default function ViewProduct(props) {
         setQuantity(quantity + 1);
     };
     const addToCard = () => {
+        const orderListClone = [...orderList];
 
-        axiosInstance
-            .post('orders', {
-                data: {
-                    "quantity": quantity,
-                    "product": 1,
-                    "user": 1,
-                    "total": quantity * 599000
-                }
-            })
-            .then((response) => {
-                // setPost(response.data);
-                console.log(response);
+        if (orderListClone.length === 0) {
+            dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
+
+            toast.success('Added this product to your cart!', {
+                position: "top-right",
+                autoClose: 350,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "light",
             });
+            return;
+        }
+
+        if (orderListClone.some(item => item.attributes.product.data.id === Number.parseInt(params.id))) {
+
+            orderListClone.some(item => {
+                if (item.attributes.product.data.id === Number.parseInt(params.id)) {
+                    dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + quantity, userId: context.userId }));
+
+                    toast.success('Added this product to your cart!', {
+                        position: "top-right",
+                        autoClose: 350,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: false,
+                        draggable: false,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    return true;
+                }
+            });
+            alert('existed');
+            return;
+        }
+
+        alert('not ');
+        dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
+
+        toast.success('Added this product to your cart!', {
+            position: "top-right",
+            autoClose: 350,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+        });
+        return;
     }
     return (
         <Spin spinning={loading} tip="Loading...">
@@ -117,10 +167,10 @@ export default function ViewProduct(props) {
                             <div className="button-quantity">
                                 <button className='decrease-btn' disabled={quantity <= 0 ? true : false} onClick={decreaseQuantity}><span>-</span></button>
                                 <span className='text'>{quantity}</span>
-                                <button className="increase-btn" disabled={quantity >= 10 ? true : false} onClick={increaseQuantity}><span>+</span></button>
+                                <button className="increase-btn" onClick={() => increaseQuantity()}><span>+</span></button>
                             </div>
                             <div className="button-add">
-                                <Button title='ADD TO CART' type='primary' color='black' size='large' disabled={isLogin ? false : true}>ADD TO CART</Button>
+                                <Button title='ADD TO CART' type='primary' color='black' size='large' disabled={isLogin ? false : true} onClick={() => addToCard()}>ADD TO CART</Button>
                             </div>
                         </div>
                         <div className="description">

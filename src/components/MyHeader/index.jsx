@@ -1,7 +1,7 @@
 import { BarsOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import MenuItem from 'antd/es/menu/MenuItem';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from '../../store/Context';
 import HeaderAccount from './HeaderAccount';
@@ -10,6 +10,8 @@ import HeaderLogo from './HeaderLogo';
 import HeaderSearch from './HeaderSearch';
 import { DrawerMenuTop, HeaderContainer, HeaderMenu } from './style';
 import './style.scss';
+import { useDispatch } from 'react-redux';
+import { fetchOrdereList } from '../../features/orders/orderSlide';
 
 function getItem(label, key, icon, children) {
   return {
@@ -24,6 +26,11 @@ function MyHeader(props) {
   const navList = ['clothes', 'sport shoes'];
   const loginContext = useContext(Context);
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(fetchOrdereList(loginContext.userId));
+  // }, [dispatch, loginContext.userId])
 
 
   const showDrawer = () => {

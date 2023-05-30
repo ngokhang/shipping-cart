@@ -43,13 +43,15 @@ function SliderProduct({ idProduct, isShowTitle }) {
       <Col xs={24}>
         <MySlick {...settings}>
           {productList?.map((product, index) => (
-            <ProductCard
-              name={product.attributes.name}
-              price={product.attributes.price}
-              imgUrl={product.attributes.image}
-              id={product.id}
-              key={index}
-            />
+            <div>
+              <ProductCard
+                name={product.attributes.name}
+                price={product.attributes.price}
+                imgUrl={product.attributes.image}
+                id={product.id}
+                key={index}
+              />
+            </div>
           ))}
         </MySlick>
       </Col>
