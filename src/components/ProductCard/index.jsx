@@ -1,12 +1,13 @@
 import { ShoppingCartOutlined } from '@ant-design/icons/lib/icons';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createOrderAPI, increaseQuantityProduct, updateOrder } from '../../features/orders/orderSlide';
+import { createOrderAPI, fetchOrdereList, increaseQuantityProduct, updateOrder } from '../../features/orders/orderSlide';
 import { formatter } from '../../shared/constants';
 import { Context } from '../../store/Context';
 import './style.scss';
+import { Spin } from 'antd';
 
 
 function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
@@ -15,6 +16,7 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
   const navigate = useNavigate();
   const orderList = useSelector(state => state.orders.orderList);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const handleOnClickCard = (e) => {
     e.stopPropagation();
@@ -28,7 +30,11 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
       if (orderListClone.length === 0) {
         dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
 
-        window.location.reload();
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          window.location.reload();
+        }, 2000);
         toast.success('Added this product to your cart!', {
           position: "top-right",
           autoClose: 350,
@@ -57,10 +63,13 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
               theme: "light",
             });
             dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId: context.userId }));
+            dispatch(fetchOrdereList(localStorage.getItem('userId')));
             dispatch(increaseQuantityProduct());
+            setLoading(true);
             setTimeout(() => {
+              setLoading(false);
               window.location.reload();
-            }, 1000);
+            }, 2000);
 
             return true;
           }
@@ -69,7 +78,11 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
         return;
       }
       dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
-      window.location.reload();
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        window.location.reload();
+      }, 2000);
 
       toast.success('Added this product to your cart!', {
         position: "top-right",
@@ -90,16 +103,19 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
   }
 
   return (
-    <div className="product-card" onClick={e => handleOnClickCard(e)} style={{ cursor: 'pointer' }}>
-      <div className="card-image">
-        <img src={imgUrl} alt="" className='image' />
-        <ShoppingCartOutlined className='cart-icon' onClick={e => handleOnClickCart(e)} />
+    <Spin spinning={loading} tips="Loading...">
+      <div className="product-card" onClick={e => handleOnClickCard(e)} style={{ cursor: 'pointer' }}>
+        <div className="card-image">
+          <img src={imgUrl} alt="" className='image' />
+          <ShoppingCartOutlined className='cart-icon' onClick={e => handleOnClickCart(e)} />
+        </div>
+        <div className="card-content">
+          <p className='text'>{name}</p>
+          <p className="cost"><sub className='text'>{formatter.format(price)}</sub></p>
+        </div>
       </div>
-      <div className="card-content">
-        <p className='text'>{name}</p>
-        <p className="cost"><sub className='text'>{formatter.format(price)}</sub></p>
-      </div>
-    </div>
+
+    </Spin>
 
   );
 }

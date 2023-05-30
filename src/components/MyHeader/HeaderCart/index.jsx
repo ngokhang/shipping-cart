@@ -17,8 +17,7 @@ function HeaderCart(props) {
   // console.log(list);
 
   // useEffect(() => {
-  //   // dispatch(fetchOrdereList(userId));
-  //   // console.log('heello world', userId)
+  //   dispatch(fetchOrdereList(userId));
   // }, [dispatch, open, quantityOrders, userId]);
 
   const showDrawer = () => {
