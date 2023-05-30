@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createOrderAPI, updateOrder } from '../../features/orders/orderSlide';
+import { createOrderAPI, increaseQuantityProduct, updateOrder } from '../../features/orders/orderSlide';
 import { formatter } from '../../shared/constants';
 import { Context } from '../../store/Context';
 import './style.scss';
@@ -28,6 +28,7 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
       if (orderListClone.length === 0) {
         dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
 
+        window.location.reload();
         toast.success('Added this product to your cart!', {
           position: "top-right",
           autoClose: 350,
@@ -45,8 +46,6 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
 
         orderListClone.some(item => {
           if (item.attributes.product.data.id === id) {
-            dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId: context.userId }));
-
             toast.success('Added this product to your cart!', {
               position: "top-right",
               autoClose: 350,
@@ -57,15 +56,20 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
               progress: undefined,
               theme: "light",
             });
+            dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId: context.userId }));
+            dispatch(increaseQuantityProduct());
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+
             return true;
           }
         });
-        alert('existed');
+
         return;
       }
-
-      alert('not ');
       dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
+      window.location.reload();
 
       toast.success('Added this product to your cart!', {
         position: "top-right",
@@ -78,8 +82,6 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
         theme: "light",
       });
 
-      // orderList.forEach(item => console.log(111, item.attributes.product.data.id));
-      // console.log(orderList.some(item => item.attributes.product.data.id === id));
       return;
     } else {
       navigate('/login');

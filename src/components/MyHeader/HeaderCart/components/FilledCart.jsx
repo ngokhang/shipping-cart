@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { formatter } from '../../../../shared/constants';
 import './FilledCart.scss';
 import ItemCart from './ItemCart';
@@ -8,10 +8,14 @@ function FilledCart(props) {
   const { _orderList } = props;
 
   const calcTotalPrice = () => {
-    return _orderList.reduce((curr, next) => {
+    return _orderList.filter(item => {
+      if (item.attributes.product.data !== null) return true;
+      return false;
+    }).reduce((curr, next) => {
       return next.attributes.quantity * next.attributes.product.data.attributes.price + curr;
     }, 0)
   }
+  const totalPrice = calcTotalPrice();
 
   return (
     <>
@@ -30,7 +34,7 @@ function FilledCart(props) {
 
       <div className='total-price'>
         <span>Subtotal: </span>
-        <span>{formatter.format(calcTotalPrice())}</span>
+        <span>{formatter.format(totalPrice)}</span>
       </div>
 
       <Button className="btn-checkout" block>

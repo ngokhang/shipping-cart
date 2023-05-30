@@ -63,12 +63,19 @@ export const orderSlice = createSlice({
         state.orderList[action.payload].attributes.quantity;
     },
     getQuantityProduct: (state, action) => {
+      // payload : id cua san pham
       state.quantityProduct =
         state.orderList[
           state.orderList.findIndex(
             item => item.attributes.product.data.id === action.payload
           )
         ].attributes.quantity;
+    },
+    decreaseQuantityProduct: state => {
+      state.quantityProduct = state.quantityProduct - 1;
+    },
+    increaseQuantityProduct: state => {
+      state.quantityProduct = state.quantityProduct + 1;
     },
   },
   extraReducers: {
@@ -106,6 +113,8 @@ export const {
   removeItem,
   updateWhenRemoveQuantityOrder,
   getQuantityProduct,
+  decreaseQuantityProduct,
+  increaseQuantityProduct,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

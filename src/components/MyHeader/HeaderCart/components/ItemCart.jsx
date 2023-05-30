@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { decreaseQuantity, deleteOrderAPI, increaseQuantity, removeItem, updateOrder, updateWhenRemoveQuantityOrder } from '../../../../features/orders/orderSlide';
+import { decreaseQuantity, decreaseQuantityProduct, deleteOrderAPI, increaseQuantity, increaseQuantityProduct, removeItem, updateOrder, updateWhenRemoveQuantityOrder } from '../../../../features/orders/orderSlide';
 import { formatter } from '../../../../shared/constants';
 import { Context } from '../../../../store/Context';
 import './ItemCart.scss';
@@ -15,12 +15,14 @@ function ItemCart({ name, price, imgUrl, quantityProduct, orderId, indexInArray 
   const handleOnClickDecrease = async () => {
     setQuantity(quantity - 1);
     dispatch(decreaseQuantity());
+    dispatch(decreaseQuantityProduct());
     dispatch(updateOrder({ orderId, quantity: quantityProduct - 1, userId: ContextProvider.userId }));
   }
 
   const handleOnClickIncrease = async () => {
     setQuantity(quantity + 1);
     dispatch(increaseQuantity());
+    dispatch(increaseQuantityProduct());
     dispatch(updateOrder({ orderId, quantity: quantityProduct + 1, userId: ContextProvider.userId }));
   }
 
