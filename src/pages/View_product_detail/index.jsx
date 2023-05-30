@@ -70,7 +70,9 @@ export default function ViewProduct(props) {
 
         if (orderListClone.length === 0) {
             dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
-
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
             toast.success('Added this product to your cart!', {
                 position: "top-right",
                 autoClose: 350,
@@ -89,7 +91,9 @@ export default function ViewProduct(props) {
             orderListClone.some(item => {
                 if (item.attributes.product.data.id === Number.parseInt(params.id)) {
                     dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + quantity, userId: context.userId }));
-
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                     toast.success('Added this product to your cart!', {
                         position: "top-right",
                         autoClose: 350,
@@ -109,7 +113,9 @@ export default function ViewProduct(props) {
 
         alert('not ');
         dispatch(createOrderAPI({ quantity: 1, product: Number.parseInt(params.id), user: context.userId, total: productData.price }));
-
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
         toast.success('Added this product to your cart!', {
             position: "top-right",
             autoClose: 350,

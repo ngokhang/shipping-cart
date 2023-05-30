@@ -24,7 +24,6 @@ export const updateOrder = createAsyncThunk(
   'orders/updateOrder',
   async ({ orderId, quantity, userId }) => {
     const res = await putUpdateOrder(orderId, quantity);
-    await getOrderList(userId);
   }
 );
 
@@ -32,7 +31,6 @@ export const deleteOrderAPI = createAsyncThunk(
   'orders/deleteOrder',
   async ({ orderId, userId }) => {
     const res = await deleteOrder(orderId);
-    // await getOrderList(userId);
   }
 );
 
@@ -79,29 +77,12 @@ export const orderSlice = createSlice({
     },
   },
   extraReducers: {
+    [fetchOrdereList.pending]: (state, action) => {},
     [fetchOrdereList.fulfilled]: (state, action) => {
       state.orderList = action.payload;
-
-      state.quantityOrders = state.orderList
-        .filter(item => {
-          if (item.attributes.product.data !== null) return true;
-          return false;
-        })
-        .reduce((curr, next) => {
-          return next.attributes.quantity + curr;
-        }, 0);
-    },
-    [createOrderAPI.fulfilled]: (state, action) => {
-      state.orderList = action.payload;
-
-      state.quantityOrders = state.orderList
-        .filter(item => {
-          if (item.attributes.product.data !== null) return true;
-          return false;
-        })
-        .reduce((curr, next) => {
-          return next.attributes.quantity + curr;
-        }, 0);
+      state.quantityOrders = state.orderList.reduce((curr, next) => {
+        return next.attributes.quantity + curr;
+      }, 0);
     },
   },
 });
