@@ -16,7 +16,7 @@ function HeaderCart(props) {
 
   useEffect(() => {
     dispatch(fetchOrdereList(userId));
-  }, [dispatch, open, userId]);
+  }, [dispatch, open, userId, loginState.isLogin]);
 
   const showDrawer = () => {
     setOpen(true);

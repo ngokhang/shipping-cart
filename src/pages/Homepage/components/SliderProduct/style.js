@@ -4,5 +4,6 @@ import styled from 'styled-components';
 export const MySlick = styled(Slider)`
   .slick-slide {
     padding: 10px;
+    width: 320px !important;
   }
 `;

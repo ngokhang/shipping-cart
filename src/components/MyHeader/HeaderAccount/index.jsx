@@ -3,6 +3,7 @@ import { AccountIcon } from './style';
 import { Dropdown } from 'antd';
 import { Context } from '../../../store/Context';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function HeaderAccount(props) {
   const loginState = useContext(Context);
@@ -12,6 +13,7 @@ function HeaderAccount(props) {
     localStorage.clear();
     loginState.setIsLogin(false);
     navigate('/');
+    toast.success('Logged out!', { autoClose: 1000, closeButton: false });
   };
   const items = [
     {
@@ -21,7 +23,7 @@ function HeaderAccount(props) {
     {
       key: '2',
       label: (
-        <a target="_blank" href="#" onClick={e => logOutAccount(e)}>
+        <a href="#" onClick={e => logOutAccount(e)}>
           Logout
         </a>
       ),

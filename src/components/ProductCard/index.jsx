@@ -23,24 +23,11 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
     navigate(`../products/${id}`);
   }
   const handleOnClickCart = async (e) => {
+    const userId = localStorage.getItem('userId');
     e.stopPropagation();
+    dispatch(fetchOrdereList(userId));
     if (isLogin) {
       const orderListClone = [...orderList];
-
-      if (orderListClone.length === 0) {
-        dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
-        toast.success('Added this product to your cart!', {
-          position: "top-right",
-          autoClose: 350,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-        });
-        return;
-      }
 
       if (orderListClone.some(item => item.attributes.product.data.id === id)) {
 
@@ -56,16 +43,18 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
               progress: undefined,
               theme: "light",
             });
-            dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId: context.userId }));
+            dispatch(updateOrder({ orderId: item.id, quantity: item.attributes.quantity + 1, userId }));
             dispatch(increaseQuantityProduct());
 
             return true;
           }
         });
 
+        alert(2);
         return;
       }
-      dispatch(createOrderAPI({ quantity: 1, product: id, user: context.userId, total: price }));
+      alert(3);
+      dispatch(createOrderAPI({ quantity: 1, product: id, user: userId, total: price }));
       toast.success('Added this product to your cart!', {
         position: "top-right",
         autoClose: 350,

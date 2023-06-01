@@ -61,7 +61,7 @@ export const postCreateOrder = async (quantity, product, user, total) => {
     data: {
       quantity,
       product,
-      user,
+      user: Number.parseInt(user),
       total,
     },
   };
