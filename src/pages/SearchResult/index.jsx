@@ -1,14 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../store/Context';
 import { Col, Pagination, Row } from 'antd';
 import './style.scss';
 import ProductCard from '../../components/ProductCard';
+import axiosInstance from '../../shared/services/http-client';
 
 function SearchResult(props) {
   const searchResultContext = useContext(Context);
   const searchResult = searchResultContext.searchResult;
   const searchKeyword = searchResultContext.searchKeyword;
-  const totalPage = searchResultContext.pageSize;
+  const totalProduct = searchResultContext.totalProductSearch;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleOnChange = (page) => {
+    setCurrentPage(page);
+    searchResultContext.setCurrentPage(page);
+  }
 
   return (
     <Row className="search-result-page" justify={'center'}>
@@ -44,7 +52,7 @@ function SearchResult(props) {
               </Row>
             </Col>
             <Col style={{ margin: '0 auto' }}>
-              <Pagination defaultCurrent={1} total={totalPage} defaultPageSize={25} />
+              <Pagination current={currentPage} total={totalProduct} pageSize={9} onChange={handleOnChange} />
             </Col>
           </Row>
         )}

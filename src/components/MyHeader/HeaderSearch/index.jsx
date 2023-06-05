@@ -13,6 +13,7 @@ function HeaderSearch(props) {
     setIsTyping(true);
   };
   const navigate = useNavigate();
+
   useEffect(() => {
     const debounceSearch = setTimeout(async () => {
       setIsTyping(false);
@@ -20,18 +21,23 @@ function HeaderSearch(props) {
         searchContext.setSearchResult([]);
       } else {
         const res = await axiosInstance.get(
-          `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`
+          `/products?filters[name][$contains]=${searchContext.searchKeyword.trim()}`, {
+          params: {
+            'pagination[page]': searchContext.currentPage,
+            'pagination[pageSize]': 9,
+          }
+        }
         );
         navigate('search');
         searchContext.setSearchResult(res.data);
-        searchContext.setPageSize(res.meta.pagination.pageSize);
+        searchContext.setTotalProductSearch(res.meta.pagination.total);
       }
     }, 1000);
 
     return () => {
       clearTimeout(debounceSearch);
     };
-  }, [searchContext.searchKeyword]);
+  }, [searchContext.searchKeyword, searchContext.currentPage]);
 
   return (
     <SearchBar

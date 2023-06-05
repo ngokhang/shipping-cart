@@ -11,9 +11,10 @@ const ProductList = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [quantityProduct, setQuantityProduct] = useState(0);
   const navigate = useNavigate();
+  const [total, setTotal] = useState();
+  const [pageSize, setPageSize] = useState(8);
 
   const handleOnClickProduct = (id) => {
     navigate(`products/${id}`)
@@ -37,12 +38,14 @@ const ProductList = () => {
 
       setProducts(response.data);
       setQuantityProduct(response.data.length);
+      setTotal(response.meta.pagination.total);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false); // Ẩn hiệu ứng loading
     }
   };
+
 
 
   const handlePageChange = (page) => {
@@ -80,7 +83,7 @@ const ProductList = () => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
-          <Pagination style={{ textalign: "center" }} current={currentPage} total={50} pageSize={pageSize} onChange={handlePageChange} />
+          <Pagination style={{ textalign: "center" }} current={currentPage} total={total} pageSize={pageSize} onChange={handlePageChange} />
         </div>
       </Spin>
     </div>

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  checkoutOrders,
   deleteOrder,
   getOrderList,
   postCreateOrder,
@@ -11,6 +12,7 @@ const initialState = {
   quantityOrders: 0,
   quantityProduct: 1,
   isLoading: false,
+  totalPrice: 0,
 };
 
 export const fetchOrdereList = createAsyncThunk(
@@ -42,6 +44,18 @@ export const createOrderAPI = createAsyncThunk(
   async ({ quantity, product, user, total }, thunkAPI) => {
     const res = await postCreateOrder(quantity, product, user, total);
     thunkAPI.dispatch(fetchOrdereList(user));
+  }
+);
+
+export const checkoutOrderAPI = createAsyncThunk(
+  'orders/checkoutOrders',
+  async ({ total, orders, user }, thunkAPI) => {
+    const res = await checkoutOrders(total, orders);
+    await Promise.all(
+      orders.map((order, index) => {
+        thunkAPI.dispatch(deleteOrderAPI({ orderId: order, userId: user }));
+      })
+    );
   }
 );
 
@@ -78,6 +92,15 @@ export const orderSlice = createSlice({
     increaseQuantityProduct: state => {
       state.quantityProduct = state.quantityProduct + 1;
     },
+    // calcTotalPrice: state => {
+    //   state.totalPrice = state.orderList.reduce((curr, next) => {
+    //     return (
+    //       next.attributes.quantity *
+    //         next.attributes.product.data.attributes.price +
+    //       curr
+    //     );
+    //   }, 0);
+    // },
   },
   extraReducers: {
     [fetchOrdereList.pending]: (state, action) => {

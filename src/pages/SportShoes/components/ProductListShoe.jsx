@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import axiosInstance from '../../../shared/services/http-client';
 import ProductCard from '../../../components/ProductCard'
 
-const pageSize = 8
+const pageSize = 8;
 
 const ProductListShoes = () => {
   //Hiệu ứng Loading
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [total, setTotal] = useState(0);
   const [quantityProduct, setQuantityProduct] = useState(0);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const ProductListShoes = () => {
 
       setProducts(response.data);
       setQuantityProduct(response.data.length);
-
+      setTotal(response.meta.pagination.total);
     } catch (error) {
       console.log(error);
     } finally {
@@ -75,7 +75,7 @@ const ProductListShoes = () => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', padding: '20px 0' }}>
-          <Pagination style={{ textalign: "center" }} current={currentPage} total={50} pageSize={pageSize} onChange={handlePageChange} />
+          <Pagination style={{ textalign: "center" }} current={currentPage} total={total} pageSize={pageSize} onChange={handlePageChange} />
         </div>
       </Spin>
     </div>

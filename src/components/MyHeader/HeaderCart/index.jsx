@@ -33,7 +33,7 @@ function HeaderCart(props) {
 
           <DrawerCart title={`Total item: ${quantityOrders}`} placement="right" onClose={onClose} open={open}>
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              {list.length === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={list} />)}
+              {list.length === 0 ? (<EmptyCart onClose={onClose} />) : (<FilledCart _orderList={list} onClose={onClose} />)}
 
             </div>
           </DrawerCart>

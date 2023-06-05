@@ -87,4 +87,14 @@ export const deleteOrder = async id => {
   return axiosInstance.delete(`orders/${id}`);
 };
 
+export const checkoutOrders = async (total, orders) => {
+  const payload = {
+    data: {
+      total,
+      orders,
+    },
+  };
+  return axiosInstance.post(`payments`, payload);
+};
+
 export default axiosInstance;
