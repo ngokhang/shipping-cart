@@ -49,11 +49,9 @@ function ProductCard({ imgUrl, name, price, id }) { // id la id cua san pham
             return true;
           }
         });
-
-        alert(2);
         return;
       }
-      alert(3);
+
       dispatch(createOrderAPI({ quantity: 1, product: id, user: userId, total: price }));
       toast.success('Added this product to your cart!', {
         position: "top-right",

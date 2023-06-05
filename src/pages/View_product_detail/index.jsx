@@ -89,11 +89,9 @@ export default function ViewProduct(props) {
                     return true;
                 }
             });
-            alert('existed');
             return;
         }
 
-        alert('not ');
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
