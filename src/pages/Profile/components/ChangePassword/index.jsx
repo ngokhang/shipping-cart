@@ -3,22 +3,26 @@ import React, { useState } from 'react';
 import InputCustom from '../../../../components/InputCustom';
 import axiosInstance from '../../../../shared/services/http-client';
 import ButtonUpdate from '../ButtonUpdate';
-
-ChangePassword.propTypes = {};
+import { toast } from 'react-toastify';
 
 function ChangePassword(props) {
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isUpdateSuccessful, setIsUpdateSuccessful] = useState(false);
 
   const handleOnChangeCurrentPassword = e => {
     setCurrentPassword(e.target.value);
-  }
+  };
+
+  const handleOnChangeNewPassword = e => {
+    setNewPassword(e.target.value);
+  };
 
   const handleOnChangePasswordConfirmation = e => {
     setPasswordConfirmation(e.target.value);
-  }
+  };
 
   const handleOnClickUpdate = async e => {
     e.preventDefault();
@@ -26,13 +30,29 @@ function ChangePassword(props) {
       setIsPasswordValid(false);
       return;
     }
+
     console.log("Check current password: ", currentPassword);
-    await axiosInstance.put('auth/change-password', {
+    const res = await axiosInstance.post('auth/change-password', {
       currentPassword,
       password: newPassword,
-      passwordConfirmation: newPassword,
+      passwordConfirmation: passwordConfirmation,
     });
+
+    if (res.jwt) {
+      toast.success('Changed password!', { autoClose: 1000 });
+      setIsUpdateSuccessful(true); // Đánh dấu cập nhật thành công
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } else {
+      toast.error('Changed password!', { autoClose: 1000 });
+
+    }
+
+    console.log(res);
+
   };
+
 
   const validatePassword = password => {
     return (
@@ -42,6 +62,7 @@ function ChangePassword(props) {
       /[!@#$%^&*]/.test(password)
     );
   };
+
   return (
     <Row
       className="change_password"
@@ -66,7 +87,7 @@ function ChangePassword(props) {
           name={'newPassword'}
           id="newPasswordInp"
           value={newPassword}
-          onChange={handleOnChangePasswordConfirmation}
+          onChange={handleOnChangeNewPassword}
         />
         {!isPasswordValid && (
           <span style={{ color: 'red' }}>
@@ -82,6 +103,8 @@ function ChangePassword(props) {
           placeholderStr={'Repeat Password'}
           name={'repeatPassword'}
           id="repeatPasswordInp"
+          value={passwordConfirmation}
+          onChange={handleOnChangePasswordConfirmation}
         />
       </Col>
       <Col xs={24} md={6}>
@@ -90,6 +113,7 @@ function ChangePassword(props) {
           title="Are you sure about that ?"
         />
       </Col>
+
     </Row>
   );
 }
