@@ -46,7 +46,6 @@ function ChangePassword(props) {
       }, 1500);
     } else {
       toast.error('Changed password!', { autoClose: 1000 });
-
     }
 
     console.log(res);

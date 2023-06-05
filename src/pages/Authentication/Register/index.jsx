@@ -6,8 +6,11 @@ import { postRegisterUser } from '../../../shared/services/http-client';
 import './RegisterAccount.css';
 import './style.scss';
 import { ToastContainer, toast } from 'react-toastify';
+import { validateEmail, validatePassword } from '../../../shared/constants';
 
 export default function RegisterPage() {
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [fullName, setFullName] = useState('');
@@ -17,6 +20,25 @@ export default function RegisterPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const navigate = useNavigate();
+
+
+  const handleOnChangeEmail = (e) => {
+    setEmail(e.target.value);
+    if (validateEmail(email)) {
+      setIsValidEmail(true)
+    } else {
+      setIsValidEmail(false);
+    }
+  }
+
+  const handleOnChangePassword = (e) => {
+    setPassword(e.target.value);
+    if (validatePassword(password)) {
+      setIsValidPassword(true)
+    } else {
+      setIsValidPassword(false);
+    }
+  }
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -46,8 +68,9 @@ export default function RegisterPage() {
               placeholderStr={'Your email'}
               id="emailInp"
               editType={true}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => handleOnChangeEmail(e)}
             />
+            {!isValidEmail && <p style={{ color: 'red' }}>Email invalid</p>}
             <InputCustom
               name="username"
               type="text"
@@ -70,8 +93,9 @@ export default function RegisterPage() {
               placeholderStr={'Password'}
               id="passwordInp"
               editType={true}
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => handleOnChangePassword(e)}
             />
+            {!isValidPassword && <p style={{ color: 'red' }}>Password invalid</p>}
             <InputCustom
               name="phonenumber"
               type="text"
